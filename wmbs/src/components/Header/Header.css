@@ -1,0 +1,12 @@
+header{
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background-color: var(--color-bg-brand);
+    height: 70px;
+    padding: 0 12px 0 20px;
+}
+
+.header-title{
+    color: var(--color-bg-default);
+}

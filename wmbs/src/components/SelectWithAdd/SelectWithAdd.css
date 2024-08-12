@@ -1,0 +1,30 @@
+.select-and-add{
+    display: flex;
+    flex-direction: column;
+}
+
+.select-div{
+    display: flex;
+    align-items: center;
+    flex-grow: 1;
+}
+
+.select-div-btn{
+    margin-left: 8px;
+    margin-top: 24px;
+}
+
+.input-div{
+    display: flex;
+    align-items: center;
+    margin-top: 15px;
+}
+
+.input-div-btn{
+    margin-left: 8px;
+}
+
+.hide{
+    display: none;
+}
+
