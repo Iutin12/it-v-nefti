@@ -1,13 +1,12 @@
+import json
 import math
-from typing import Union
-
 from fastapi import FastAPI
 
 app = FastAPI()
 
 @app.get("/")
 def read_root():
-    return {"Hello": "World"}
+    return {"Hello": "222"}
 
 
 """
@@ -26,7 +25,7 @@ pB      - давление насыщения
 
 """
 @app.get("/irp/calculate")
-def calculate(k: float ,
+def calculate(k: float,
               h: float,
               vn: float,
               B: float,
@@ -34,13 +33,19 @@ def calculate(k: float ,
               rw: float,
               s: float,
               pAvg: float,
-              pB:float,
-              pWF: float):
+              pB:float
+              )->object:
 
-    PI = (2 * math.pi * k * h)/ (vn * B * (math.log(r/rw) - (1/2) + s))
+    P_WF = [0, 25, 49, 73, 97, 121, 145, 169, 193, 200]
+    Q = []
+    res = {}
+    try:
+        PI = (2 * math.pi * k * h)/(vn * B * (math.log(r/rw) - (1/2) + s))
+        for i in range(len(P_WF)):
+            Q.append(((PI * (pAvg - pB))/(1 - 0.2 * (pB/pAvg) - 0.8 * (P_WF[i]/pAvg)**2)) * (1 - 0.2 * (P_WF[i]/pAvg) - 0.8 * (P_WF[i]/pAvg)**2))
+    except Exception:
+        print("Ошибка")
+    res = json.dumps(Q)
+    print(res)
 
-    Q = ((PI * (pAvg - pB))/(1 - 0.2 * (pB/pAvg) - 0.8 * (pWF/pAvg)**2)) * (1 - 0.2 * (pWF/pAvg) - 0.8 * (pWF/pAvg)**2)
-    return {"Q":Q}
-@app.get("/irp/test")
-def test():
-    return {"Q":2}
+    return res
