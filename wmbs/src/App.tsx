@@ -11,19 +11,19 @@ import Authorization from './pages/Authorization/Authorization';
 
 function App() {
   return (
-      // <Theme preset={presetGpnDefault}>
-      //       <Header/>
-      //     <Layout>
-      //       <Layout flex={1}>
-      //           <InputForm/>
-      //       </Layout>
-      //       <Layout flex={1}>
-      //           <Text align={'center'} >Здесь будет график</Text>
-      //       </Layout>
-      //     </Layout>
-      //     <Footer/>
-      // </Theme>
-      <Authorization login='' password={121} />
+      <Theme preset={presetGpnDefault}>
+            <Header/>
+          <Layout>
+            <Layout flex={1}>
+                <InputForm/>
+            </Layout>
+            <Layout flex={1}>
+                <Text align={'center'} >Здесь будет график</Text>
+            </Layout>
+          </Layout>
+          <Footer/>
+      </Theme>
+      // <Authorization login='' password={121} />
   );
 }
 

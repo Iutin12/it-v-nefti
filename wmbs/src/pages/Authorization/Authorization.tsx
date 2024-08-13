@@ -13,12 +13,15 @@ interface AuthorizationProps {
 
 const Authorization  = (props: AuthorizationProps) => {
     return (
+        <Theme preset={presetGpnDefault}>
             <Flex flexDirection='column' justifyContent='between' alignItems='center'>
                     <Text>Вход</Text>
                     <TextField placeholder="Введите логин" type="text" form="defaultBrick" size="m"/>
                     <TextField placeholder="Введите пароль" />
                     <Button label="Отправить" />
             </Flex>
+        </Theme>
+
     );
 }
 
