@@ -8,42 +8,42 @@ datasource db {
 }
 
 model well {
-  id   String @id @default(uuid())
-  name String @unique
+  id          String @id @default(uuid())
+  well_number String @unique
 
   created_at DateTime @default(now())
   updated_at DateTime @default(now())
 
-  oilfield    oilfield? @relation(fields: [oilfield_id], references: [id])
-  oilfield_id String?
+  field    field?  @relation(fields: [field_id], references: [id])
+  field_id String?
 
-  oilfield_wells oilfield_wells[]
-  calculations   calculation[]
+  field_wells field_wells[]
+  init_datas  init_data[]
 
-  @@unique([id, oilfield_id])
+  @@unique([id, field_id])
 }
 
-model oilfield {
-  id   String @id @default(uuid())
-  name String
+model field {
+  id         String @id @default(uuid())
+  field_name String @unique
 
   created_at DateTime @default(now())
   updated_at DateTime @default(now())
 
-  wells          well[]
-  oilfield_wells oilfield_wells[]
+  wells       well[]
+  field_wells field_wells[]
 }
 
-model oilfield_wells {
-  id          String @id @unique @default(cuid())
-  oilfield_id String
-  well_id     String
+model field_wells {
+  id       String @id @unique @default(cuid())
+  field_id String
+  well_id  String
 
-  oilfield oilfield @relation(fields: [oilfield_id], references: [id], onDelete: Cascade)
-  well     well     @relation(fields: [well_id], references: [id], onDelete: Cascade)
+  field field @relation(fields: [field_id], references: [id], onDelete: Cascade)
+  well  well  @relation(fields: [well_id], references: [id], onDelete: Cascade)
 }
 
-model calculation {
+model init_data {
   id String @id @unique @default(uuid())
 
   well_head_pressure          Float
@@ -71,16 +71,16 @@ model calculation {
   well    well?   @relation(fields: [well_id], references: [id])
   well_id String?
 
-  calculation_result    calculation_result @relation(fields: [calculation_result_id], references: [id])
-  calculation_result_id String             @unique
+  calc_result    calc_result @relation(fields: [calc_result_id], references: [id])
+  calc_result_id String      @unique
 }
 
-model calculation_result {
+model calc_result {
   id String @id @unique @default(uuid())
 
   result     Json
   created_at DateTime @default(now())
 
-  calculation    calculation?
-  calculation_id String
+  init_data    init_data?
+  init_data_id String
 }

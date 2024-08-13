@@ -1,49 +1,30 @@
 import { Injectable } from '@nestjs/common'
-import { ApiProperty } from '@nestjs/swagger'
-import { oilfield, well } from '@prisma/client'
 import { PrismaService } from 'src/db/prisma.service'
-
-export class CreateOilfieldDto {
-  @ApiProperty()
-  name: string
-}
-
-export class CreateWellDto {
-  @ApiProperty()
-  wellName: string
-  @ApiProperty()
-  oilfieldId: string
-}
-
-export class OilfieldWithWell {
-  @ApiProperty()
-  oilfield: oilfield
-  @ApiProperty()
-  well: well
-}
+import { CreateOilfieldDto, CreateWellDto, OilfieldDto, OilfieldWithWell, WellDto } from './oilfield.dto'
+import { field } from '@prisma/client'
 
 @Injectable()
 export class OilfieldService {
   constructor(private readonly prisma: PrismaService) {}
 
-  async getOilfieldsForUser(): Promise<oilfield[]> {
-    return await this.prisma.oilfield.findMany()
+  async getOilfieldsForUser(): Promise<field[]> {
+    return await this.prisma.field.findMany()
   }
 
-  async getOilfieldWells(oilfieldId: string): Promise<well[]> {
+  async getOilfieldWells(oilfieldId: string): Promise<WellDto[]> {
     return await this.prisma.well.findMany({
       where: {
-        oilfield_id: {
+        field_id: {
           equals: oilfieldId,
         },
       },
     })
   }
 
-  async create(newOilfield: CreateOilfieldDto): Promise<oilfield> {
-    return this.prisma.oilfield.create({
+  async create(newOilfield: CreateOilfieldDto): Promise<OilfieldDto> {
+    return this.prisma.field.create({
       data: {
-        name: newOilfield.name,
+        field_name: newOilfield.name,
       },
     })
   }
@@ -51,12 +32,12 @@ export class OilfieldService {
   async linkWell(createWellDto: CreateWellDto): Promise<OilfieldWithWell> {
     const well = await this.prisma.well.create({
       data: {
-        name: createWellDto.wellName,
-        oilfield_id: createWellDto.oilfieldId,
+        well_number: createWellDto.wellName,
+        field_id: createWellDto.oilfieldId,
       },
     })
 
-    this.prisma.oilfield.update({
+    this.prisma.field.update({
       where: {
         id: createWellDto.oilfieldId,
       },
@@ -69,13 +50,13 @@ export class OilfieldService {
       },
     })
 
-    return this.prisma.oilfield_wells.create({
+    return this.prisma.field_wells.create({
       data: {
-        oilfield_id: createWellDto.oilfieldId,
+        field_id: createWellDto.oilfieldId,
         well_id: well.id,
       },
       select: {
-        oilfield: true,
+        field: true,
         well: true,
       },
     })

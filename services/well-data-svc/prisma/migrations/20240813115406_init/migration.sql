@@ -1,35 +1,35 @@
 -- CreateTable
 CREATE TABLE "well" (
     "id" TEXT NOT NULL,
-    "name" TEXT NOT NULL,
+    "well_number" TEXT NOT NULL,
     "created_at" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "updated_at" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
-    "oilfield_id" TEXT,
+    "field_id" TEXT,
 
     CONSTRAINT "well_pkey" PRIMARY KEY ("id")
 );
 
 -- CreateTable
-CREATE TABLE "oilfield" (
+CREATE TABLE "field" (
     "id" TEXT NOT NULL,
-    "name" TEXT NOT NULL,
+    "field_name" TEXT NOT NULL,
     "created_at" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "updated_at" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
 
-    CONSTRAINT "oilfield_pkey" PRIMARY KEY ("id")
+    CONSTRAINT "field_pkey" PRIMARY KEY ("id")
 );
 
 -- CreateTable
-CREATE TABLE "oilfield_wells" (
+CREATE TABLE "field_wells" (
     "id" TEXT NOT NULL,
-    "oilfield_id" TEXT NOT NULL,
+    "field_id" TEXT NOT NULL,
     "well_id" TEXT NOT NULL,
 
-    CONSTRAINT "oilfield_wells_pkey" PRIMARY KEY ("id")
+    CONSTRAINT "field_wells_pkey" PRIMARY KEY ("id")
 );
 
 -- CreateTable
-CREATE TABLE "calculation" (
+CREATE TABLE "init_data" (
     "id" TEXT NOT NULL,
     "well_head_pressure" DOUBLE PRECISION NOT NULL,
     "depth" DOUBLE PRECISION NOT NULL,
@@ -52,50 +52,53 @@ CREATE TABLE "calculation" (
     "created_at" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "updated_at" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "well_id" TEXT,
-    "calculation_result_id" TEXT NOT NULL,
+    "calc_result_id" TEXT NOT NULL,
 
-    CONSTRAINT "calculation_pkey" PRIMARY KEY ("id")
+    CONSTRAINT "init_data_pkey" PRIMARY KEY ("id")
 );
 
 -- CreateTable
-CREATE TABLE "calculation_result" (
+CREATE TABLE "calc_result" (
     "id" TEXT NOT NULL,
     "result" JSONB NOT NULL,
     "created_at" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
-    "calculation_id" TEXT NOT NULL,
+    "init_data_id" TEXT NOT NULL,
 
-    CONSTRAINT "calculation_result_pkey" PRIMARY KEY ("id")
+    CONSTRAINT "calc_result_pkey" PRIMARY KEY ("id")
 );
 
 -- CreateIndex
-CREATE UNIQUE INDEX "well_name_key" ON "well"("name");
+CREATE UNIQUE INDEX "well_well_number_key" ON "well"("well_number");
 
 -- CreateIndex
-CREATE UNIQUE INDEX "well_id_oilfield_id_key" ON "well"("id", "oilfield_id");
+CREATE UNIQUE INDEX "well_id_field_id_key" ON "well"("id", "field_id");
 
 -- CreateIndex
-CREATE UNIQUE INDEX "oilfield_wells_id_key" ON "oilfield_wells"("id");
+CREATE UNIQUE INDEX "field_field_name_key" ON "field"("field_name");
 
 -- CreateIndex
-CREATE UNIQUE INDEX "calculation_id_key" ON "calculation"("id");
+CREATE UNIQUE INDEX "field_wells_id_key" ON "field_wells"("id");
 
 -- CreateIndex
-CREATE UNIQUE INDEX "calculation_calculation_result_id_key" ON "calculation"("calculation_result_id");
+CREATE UNIQUE INDEX "init_data_id_key" ON "init_data"("id");
 
 -- CreateIndex
-CREATE UNIQUE INDEX "calculation_result_id_key" ON "calculation_result"("id");
+CREATE UNIQUE INDEX "init_data_calc_result_id_key" ON "init_data"("calc_result_id");
+
+-- CreateIndex
+CREATE UNIQUE INDEX "calc_result_id_key" ON "calc_result"("id");
 
 -- AddForeignKey
-ALTER TABLE "well" ADD CONSTRAINT "well_oilfield_id_fkey" FOREIGN KEY ("oilfield_id") REFERENCES "oilfield"("id") ON DELETE SET NULL ON UPDATE CASCADE;
+ALTER TABLE "well" ADD CONSTRAINT "well_field_id_fkey" FOREIGN KEY ("field_id") REFERENCES "field"("id") ON DELETE SET NULL ON UPDATE CASCADE;
 
 -- AddForeignKey
-ALTER TABLE "oilfield_wells" ADD CONSTRAINT "oilfield_wells_oilfield_id_fkey" FOREIGN KEY ("oilfield_id") REFERENCES "oilfield"("id") ON DELETE CASCADE ON UPDATE CASCADE;
+ALTER TABLE "field_wells" ADD CONSTRAINT "field_wells_field_id_fkey" FOREIGN KEY ("field_id") REFERENCES "field"("id") ON DELETE CASCADE ON UPDATE CASCADE;
 
 -- AddForeignKey
-ALTER TABLE "oilfield_wells" ADD CONSTRAINT "oilfield_wells_well_id_fkey" FOREIGN KEY ("well_id") REFERENCES "well"("id") ON DELETE CASCADE ON UPDATE CASCADE;
+ALTER TABLE "field_wells" ADD CONSTRAINT "field_wells_well_id_fkey" FOREIGN KEY ("well_id") REFERENCES "well"("id") ON DELETE CASCADE ON UPDATE CASCADE;
 
 -- AddForeignKey
-ALTER TABLE "calculation" ADD CONSTRAINT "calculation_well_id_fkey" FOREIGN KEY ("well_id") REFERENCES "well"("id") ON DELETE SET NULL ON UPDATE CASCADE;
+ALTER TABLE "init_data" ADD CONSTRAINT "init_data_well_id_fkey" FOREIGN KEY ("well_id") REFERENCES "well"("id") ON DELETE SET NULL ON UPDATE CASCADE;
 
 -- AddForeignKey
-ALTER TABLE "calculation" ADD CONSTRAINT "calculation_calculation_result_id_fkey" FOREIGN KEY ("calculation_result_id") REFERENCES "calculation_result"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
+ALTER TABLE "init_data" ADD CONSTRAINT "init_data_calc_result_id_fkey" FOREIGN KEY ("calc_result_id") REFERENCES "calc_result"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
