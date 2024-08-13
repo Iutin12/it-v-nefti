@@ -40,5 +40,13 @@ services:
       db:
         condition: service_healthy
 
+  frontend:
+    container_name: frontend
+    build:
+      context: ../wmbs
+      dockerfile: Frontend.Dockerfile
+    ports:
+      - 80:80
+
 volumes:
   db_postgres_data:
