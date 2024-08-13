@@ -2,7 +2,7 @@ import {Select} from "@consta/uikit/Select";
 import {useState} from "react";
 import {Button} from "@consta/uikit/Button";
 import {IconAdd} from '@consta/icons/IconAdd';
-import {TextField} from "@consta/uikit/TextField";
+import {TextField, TextFieldPropValue} from "@consta/uikit/TextField";
 import './SelectWithAdd.css';
 import {Text} from "@consta/uikit/Text";
 import {Modal} from "@consta/uikit/Modal";
@@ -13,27 +13,7 @@ interface SelectWithAddProps {
 
 const SelectWithAdd: React.FC<SelectWithAddProps> = (props) => {
 
-    type Item = {
-        label: string;
-        id: number;
-    };
-
-    const items: Item[] = [
-        {
-            label: 'Первый',
-            id: 1,
-        },
-        {
-            label: 'Второй',
-            id: 2,
-        },
-        {
-            label: 'Третий',
-            id: 3,
-        },
-    ];
-
-    const [value, setValue] = useState<Item | null>();
+    const [value, setValue] = useState<string | null>('');
     const [hide, setHide] = useState<boolean>(true);
     const [isModalOpen, setIsModalOpen] = useState(false);
 
@@ -46,13 +26,28 @@ const SelectWithAdd: React.FC<SelectWithAddProps> = (props) => {
         console.log('Well');
 
     }
+    const [error, setError] = useState('');
+
+    // Регулярное выражение для проверки кириллицы и латиницы
+    const regex = /^[A-Za-zА-Яа-яЁё0-9\s]+$/; // Разрешаем латиницу, кириллицу, цифры и пробелы
+
+    const onClick = () => {
+        // Проверяем, соответствует ли введенное значение регулярному выражению
+        if (value && regex.test(value)) {
+            setIsModalOpen(true)
+        } else {
+            setError('Введите только буквы кириллицы или латиницы'); // Устанавливаем сообщение об ошибке
+        }
+    };
 
     return <div className={'select-and-add'}>
         <div className={'select-div'}>
             <Select
+                getItemLabel={() => ''}
+                getItemKey={() => ''}
                 label={props.label}
                 placeholder="Выберите значение"
-                items={items}
+                items={[]}
                 value={value}
                 onChange={setValue}
                 form={'round'}
@@ -63,11 +58,8 @@ const SelectWithAdd: React.FC<SelectWithAddProps> = (props) => {
                     onClick={() => setHide(false)}/>
         </div>
         <div className={hide ? 'input-div hide' : 'input-div'}>
-            <TextField placeholder="Введите название" size={'s'}
-                       onChange={(val) => setValue(val as Item | null | undefined)}/>
-            <Button className={'input-div-btn'} label="Добавить" size={'s'} disabled={!value}
-                    onClick={() => setIsModalOpen(true)}
-            />
+            <TextField caption={error} placeholder="Введите название" onChange={setValue} value={value ?? '' } size={'s'} />
+            <Button className={'input-div-btn'} label="Добавить" size={'s'} onClick={onClick}/>
         </div>
 
         <Modal

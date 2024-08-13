@@ -8,11 +8,30 @@ import {Layout} from "@consta/uikit/Layout";
 import {useState} from "react";
 import {Modal} from "@consta/uikit/Modal";
 
+
+const initialState = data.reduce((prev, curr) => {
+    prev[curr.id] = {value: null, min: curr.min, max: curr.max}
+    
+    return prev
+}, {}as {[key:string]:{value: number|null, min: number, max:number}})
+
 const InputForm = () => {
     const [value, setValue] = useState(0)
     const [valid, setValid] = useState(true)
     const [isModalClearOpen, setIsModalClearOpen] = useState(false);
     const [isModalCalcOpen, setIsModalCalcOpen] = useState(false);
+
+    const [form, setForm] = useState(initialState)
+
+    const isValid = Object.values(form).every(({value, min, max}) =>value && value >= min && value <= max)
+
+    const onChange = (name:string, value:number|null) => {
+        setForm((prev) => ({...prev, [name]:{...prev[name], value}}))
+    }
+
+    const onReset = () => {
+        setForm(initialState)
+    }
 
     return <Layout>
         {/* Форма для заполнения данных для графика */}
@@ -22,16 +41,17 @@ const InputForm = () => {
             <GridItem><Text size={'l'} align={'center'}>Значение</Text></GridItem>
 
             {/* Формы */}
-            {data.map((item, index) => <ParamAndValue text={item.text} min={item.min} max={item.max}
-                                                      key={index}/>)}
+            {data.map((item, index) => <ParamAndValue value={form[item.id].value} id={item.id} text={item.text} min={item.min} max={item.max} measure={item.measure} key={item.id} onChange={onChange}/>)}
             {/* Кнопки */}
             <GridItem col={2} className={'input-form-btns'}>
                 <Button className={'input-form-btn-clear'} label="Очистить"
                         onClick={() => setIsModalClearOpen(true)}></Button>
                 <Button className={'input-form-btn-calc'} label="Рассчитать"
-                        onClick={() => setIsModalCalcOpen(true)}></Button>
+                        onClick={() => setIsModalCalcOpen(true)} disabled={!isValid}></Button>
             </GridItem>
         </Grid>
+
+        
         <Modal
             isOpen={isModalClearOpen}
             hasOverlay
@@ -46,7 +66,7 @@ const InputForm = () => {
                     size="m"
                     view="primary"
                     label="Да"
-                    // onClick={}
+                    onClick={onReset}
                 />
                 <Button
                     size="m"
