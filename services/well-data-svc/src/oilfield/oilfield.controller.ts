@@ -59,6 +59,15 @@ export class OilfieldController {
     } catch (error) {
       console.log(error)
 
+      if (error instanceof Prisma.PrismaClientKnownRequestError) {
+        switch (error.code) {
+          case 'P2002':
+            throw new BadRequestException('Oilfield with this name already exists')
+          default:
+            throw new InternalServerErrorException('Internal server error')
+        }
+      }
+
       throw new InternalServerErrorException('Internal server error')
     }
   }
