@@ -25,9 +25,9 @@ SaturationPressure          - давление насыщения
 
 """
 @app.get("/irp/calculate")
-def calculate(pWfStart: int,
-              pWfEnd: int,
-              pWfStep: int,
+def calculate(StartPwf: int,
+              EndPwf: int,
+              StepPwf: int,
               Permeability : float,
               Thickness : float,
               FluidViscosity : float,
@@ -40,7 +40,7 @@ def calculate(pWfStart: int,
               )->object:
 
 
-    p_wf = [i for i in range(pWfStart,pWfEnd+pWfStep, pWfStep)]
+    p_wf = [i for i in range(StartPwf,EndPwf+StepPwf, StepPwf)]
     Q = []
     try:
         PI = (2 * math.pi * Permeability * Thickness)/(FluidViscosity * FluidVoumeFactor * (math.log(SupplyContourRadius/WellRadius) - (1/2) + Skin))
