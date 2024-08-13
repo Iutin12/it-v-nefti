@@ -1,0 +1,86 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model well {
+  id          String @id @default(uuid())
+  well_number String @unique
+
+  created_at DateTime @default(now())
+  updated_at DateTime @default(now())
+
+  field    field?  @relation(fields: [field_id], references: [id])
+  field_id String?
+
+  field_wells field_wells[]
+  init_datas  init_data[]
+
+  @@unique([id, field_id])
+}
+
+model field {
+  id         String @id @default(uuid())
+  field_name String @unique
+
+  created_at DateTime @default(now())
+  updated_at DateTime @default(now())
+
+  wells       well[]
+  field_wells field_wells[]
+}
+
+model field_wells {
+  id       String @id @unique @default(cuid())
+  field_id String
+  well_id  String
+
+  field field @relation(fields: [field_id], references: [id], onDelete: Cascade)
+  well  well  @relation(fields: [well_id], references: [id], onDelete: Cascade)
+}
+
+model init_data {
+  id String @id @unique @default(uuid())
+
+  well_head_pressure          Float
+  depth                       Float
+  fluid_compressibility       Float
+  fluid_density               Float
+  pipe_diameter               Float
+  inclination_angle           Float
+  sections_number             Float
+  moody_coefficient           Float
+  start_liquid_rate           Float
+  permeability                Float
+  thickness                   Float
+  fluid_viscosity             Float
+  fluid_voume_factor          Float
+  saturation_pressure         Float
+  average_reservoire_pressure Float
+  supply_contour_radius       Float
+  well_radius                 Float
+  skin_factor                 Float
+
+  created_at DateTime @default(now())
+  updated_at DateTime @default(now())
+
+  well    well?   @relation(fields: [well_id], references: [id])
+  well_id String?
+
+  calc_result    calc_result @relation(fields: [calc_result_id], references: [id])
+  calc_result_id String      @unique
+}
+
+model calc_result {
+  id String @id @unique @default(uuid())
+
+  result     Json
+  created_at DateTime @default(now())
+
+  init_data    init_data?
+  init_data_id String
+}
