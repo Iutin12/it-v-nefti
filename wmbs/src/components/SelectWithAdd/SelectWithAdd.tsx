@@ -73,7 +73,8 @@ const SelectWithAdd = () => {
         setHideWell(true);
 
     }
-    const [error, setError] = useState('');
+    const [errorOilfield, setErrorOilfield] = useState('');
+    const [errorWell, setErrorWell] = useState('');
 
     const regex = /^[A-Za-zА-Яа-яЁё0-9]+$/;
 
@@ -81,7 +82,7 @@ const SelectWithAdd = () => {
         if (valueOilfield && regex.test(valueOilfield)) {
             setIsModalOilfieldOpen(true);
         } else {
-            setError('Введите только буквы кириллицы или латиницы или пробел');
+            setErrorOilfield('Введите только буквы кириллицы или латиницы или пробел');
         }
     };
 
@@ -89,7 +90,7 @@ const SelectWithAdd = () => {
         if (valueWell && regex.test(valueWell)) {
             setIsModalWellOpen(true);
         } else {
-            setError('Введите только буквы кириллицы или латиницы или пробел');
+            setErrorWell('Введите только буквы кириллицы или латиницы или пробел');
         }
     };
 
@@ -119,7 +120,7 @@ const SelectWithAdd = () => {
                         onClick={() => setHideOilfield(false)}/>
             </div>
             <div className={hideOilfield ? 'input-div hide' : 'input-div'}>
-                <TextField caption={error} placeholder="Введите название" onChange={setValueOilfield}
+                <TextField caption={errorOilfield} placeholder="Введите название" onChange={setValueOilfield}
                            value={valueOilfield ?? ''}
                            size={'s'}/>
                 <Button className={'input-div-btn'} label="Добавить" size={'s'} onClick={() => onClickOilfield()}/>
@@ -172,7 +173,7 @@ const SelectWithAdd = () => {
                         onClick={() => setHideWell(false)}/>
             </div>
             <div className={hideWell ? 'input-div hide' : 'input-div'}>
-                <TextField caption={error} placeholder="Введите название" onChange={setValueWell}
+                <TextField caption={errorWell} placeholder="Введите название" onChange={setValueWell}
                            value={valueWell ?? ''}
                            size={'s'}/>
                 <Button className={'input-div-btn'} label="Добавить" size={'s'} onClick={() => onClickWell()}/>
