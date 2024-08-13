@@ -1,13 +1,13 @@
 import { BadRequestException, Body, Controller, Get, InternalServerErrorException, Param, Post } from '@nestjs/common'
 import { CreateOilfieldDto, CreateWellDto, OilfieldService, OilfieldWithWell } from './oilfield.service'
-import { Oilfield, Well } from '@prisma/client'
+import { oilfield, well } from '@prisma/client'
 
 @Controller('oilfield')
 export class OilfieldController {
   constructor(private readonly oilfieldService: OilfieldService) {}
 
   @Get()
-  async getOilfieldsForUser(): Promise<Oilfield[]> {
+  async getOilfieldsForUser(): Promise<oilfield[]> {
     try {
       const oifields = await this.oilfieldService.getOilfieldsForUser()
       return oifields
@@ -18,7 +18,7 @@ export class OilfieldController {
   }
 
   @Get('/:oilfieldId/wells/')
-  async getOilfieldWells(@Param() params: { oilfieldId: string }): Promise<Well[]> {
+  async getOilfieldWells(@Param() params: { oilfieldId: string }): Promise<well[]> {
     const oilfieldId = params.oilfieldId
 
     if (!oilfieldId) {
@@ -35,7 +35,7 @@ export class OilfieldController {
   }
 
   @Post()
-  async create(@Body() createOilfieldDto: CreateOilfieldDto): Promise<Oilfield> {
+  async create(@Body() createOilfieldDto: CreateOilfieldDto): Promise<oilfield> {
     try {
       const oilfield = await this.oilfieldService.create(createOilfieldDto)
       return oilfield

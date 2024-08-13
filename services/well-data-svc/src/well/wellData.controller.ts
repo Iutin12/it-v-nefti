@@ -1,6 +1,6 @@
 import { Body, Controller, Get, InternalServerErrorException, NotFoundException, Param, Post } from '@nestjs/common'
 import { WellDataService, CreateWellDto } from './wellData.service'
-import { Well } from '@prisma/client'
+import { well } from '@prisma/client'
 
 // todo: add validation
 @Controller()
@@ -8,7 +8,7 @@ export class WellDataController {
   constructor(private readonly appService: WellDataService) {}
 
   @Get()
-  async getAll(): Promise<Well[]> {
+  async getAll(): Promise<well[]> {
     try {
       const well = await this.appService.getAll()
 
@@ -24,7 +24,7 @@ export class WellDataController {
   }
 
   @Get(':id')
-  async getById(@Param('id') id: string): Promise<Well> {
+  async getById(@Param('id') id: string): Promise<well> {
     try {
       const well = await this.appService.getById(id)
 
@@ -40,7 +40,7 @@ export class WellDataController {
   }
 
   @Post()
-  async create(@Body() createWellDto: CreateWellDto): Promise<Well> {
+  async create(@Body() createWellDto: CreateWellDto): Promise<well> {
     try {
       const well = await this.appService.create(createWellDto)
       return well

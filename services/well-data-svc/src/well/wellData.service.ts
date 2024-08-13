@@ -1,6 +1,6 @@
 import { Injectable } from '@nestjs/common'
 import { PrismaService } from '../db/prisma.service'
-import { Well } from '@prisma/client'
+import { well } from '@prisma/client'
 
 export type CreateWellDto = {
   name: string
@@ -10,7 +10,7 @@ export type CreateWellDto = {
 export class WellDataService {
   constructor(private prisma: PrismaService) {}
 
-  async getById(id: string): Promise<Well> {
+  async getById(id: string): Promise<well> {
     return this.prisma.well.findFirst({
       where: {
         id: {
@@ -20,7 +20,7 @@ export class WellDataService {
     })
   }
 
-  async create(newWell: CreateWellDto): Promise<Well> {
+  async create(newWell: CreateWellDto): Promise<well> {
     return this.prisma.well.create({
       data: {
         name: newWell.name,
@@ -28,7 +28,7 @@ export class WellDataService {
     })
   }
 
-  async getAll(): Promise<Well[]> {
+  async getAll(): Promise<well[]> {
     return this.prisma.well.findMany()
   }
 }

@@ -1,5 +1,5 @@
 import { Injectable } from '@nestjs/common'
-import { Oilfield, Well } from '@prisma/client'
+import { oilfield, well } from '@prisma/client'
 import { PrismaService } from 'src/db/prisma.service'
 
 export type CreateOilfieldDto = {
@@ -12,29 +12,29 @@ export type CreateWellDto = {
 }
 
 export type OilfieldWithWell = {
-  oilfield: Oilfield
-  well: Well
+  oilfield: oilfield
+  well: well
 }
 
 @Injectable()
 export class OilfieldService {
   constructor(private readonly prisma: PrismaService) {}
 
-  async getOilfieldsForUser(): Promise<Oilfield[]> {
+  async getOilfieldsForUser(): Promise<oilfield[]> {
     return await this.prisma.oilfield.findMany()
   }
 
-  async getOilfieldWells(oilfieldId: string): Promise<Well[]> {
+  async getOilfieldWells(oilfieldId: string): Promise<well[]> {
     return await this.prisma.well.findMany({
       where: {
-        oilfieldId: {
+        oilfield_id: {
           equals: oilfieldId,
         },
       },
     })
   }
 
-  async create(newOilfield: CreateOilfieldDto): Promise<Oilfield> {
+  async create(newOilfield: CreateOilfieldDto): Promise<oilfield> {
     return this.prisma.oilfield.create({
       data: {
         name: newOilfield.name,
@@ -46,7 +46,7 @@ export class OilfieldService {
     const well = await this.prisma.well.create({
       data: {
         name: createWellDto.wellName,
-        oilfieldId: createWellDto.oilfieldId,
+        oilfield_id: createWellDto.oilfieldId,
       },
     })
 
@@ -63,10 +63,10 @@ export class OilfieldService {
       },
     })
 
-    return this.prisma.oilfieldWells.create({
+    return this.prisma.oilfield_wells.create({
       data: {
-        oilfieldId: createWellDto.oilfieldId,
-        wellId: well.id,
+        oilfield_id: createWellDto.oilfieldId,
+        well_id: well.id,
       },
       select: {
         oilfield: true,
