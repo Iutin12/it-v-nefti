@@ -1,8 +1,8 @@
 .header-arrow{
     position: absolute;
-    padding: 13px;
+    padding: 5px;
     top: 60px;
-    right: 12px;
+    text-align: center;
     background-color: var(--color-bg-brand);
     animation: fadeIn 0.3s ease-in-out;
     border-bottom-left-radius:10px ;

@@ -12,7 +12,7 @@ const ActionHeaderWindow = () => {
 
     return (
         <div className='header-arrow' onClick={handleLogoutClick}>
-                <Text size={'m'} className={'header-arrow-text'}>Выйти</Text>
+                <Text size={'m'} className={'header-arrow-text'}>Выйти из системы</Text>
         </div>
     )
    
