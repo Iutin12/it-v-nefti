@@ -1,15 +1,15 @@
 import { Text } from '@consta/uikit/Text';
 import { User } from '@consta/uikit/User';
 import './Header.css';
-import React from 'react';
+import React, {useState} from 'react';
 
 import ActionHeaderWindow from './ActionHeaderWindow/ActionHeaderWindow';
 
 const Header = () => {
-    const [isModalOpen, setModalOpen] = React.useState(false);
+    const [isModalOpen, setModalOpen] = useState(false);
 
     const handleUserClick = () => {
-        setModalOpen(true);
+        setModalOpen(!isModalOpen);
     };
 
     return (
