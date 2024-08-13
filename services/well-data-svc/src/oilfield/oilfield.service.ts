@@ -1,18 +1,24 @@
 import { Injectable } from '@nestjs/common'
+import { ApiProperty } from '@nestjs/swagger'
 import { oilfield, well } from '@prisma/client'
 import { PrismaService } from 'src/db/prisma.service'
 
-export type CreateOilfieldDto = {
+export class CreateOilfieldDto {
+  @ApiProperty()
   name: string
 }
 
-export type CreateWellDto = {
+export class CreateWellDto {
+  @ApiProperty()
   wellName: string
+  @ApiProperty()
   oilfieldId: string
 }
 
-export type OilfieldWithWell = {
+export class OilfieldWithWell {
+  @ApiProperty()
   oilfield: oilfield
+  @ApiProperty()
   well: well
 }
 

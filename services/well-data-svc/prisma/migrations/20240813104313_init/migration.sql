@@ -22,8 +22,8 @@ CREATE TABLE "oilfield" (
 -- CreateTable
 CREATE TABLE "oilfield_wells" (
     "id" TEXT NOT NULL,
-    "oilfieldId" TEXT NOT NULL,
-    "wellId" TEXT NOT NULL,
+    "oilfield_id" TEXT NOT NULL,
+    "well_id" TEXT NOT NULL,
 
     CONSTRAINT "oilfield_wells_pkey" PRIMARY KEY ("id")
 );
@@ -89,10 +89,10 @@ CREATE UNIQUE INDEX "calculation_result_id_key" ON "calculation_result"("id");
 ALTER TABLE "well" ADD CONSTRAINT "well_oilfield_id_fkey" FOREIGN KEY ("oilfield_id") REFERENCES "oilfield"("id") ON DELETE SET NULL ON UPDATE CASCADE;
 
 -- AddForeignKey
-ALTER TABLE "oilfield_wells" ADD CONSTRAINT "oilfield_wells_oilfieldId_fkey" FOREIGN KEY ("oilfieldId") REFERENCES "oilfield"("id") ON DELETE CASCADE ON UPDATE CASCADE;
+ALTER TABLE "oilfield_wells" ADD CONSTRAINT "oilfield_wells_oilfield_id_fkey" FOREIGN KEY ("oilfield_id") REFERENCES "oilfield"("id") ON DELETE CASCADE ON UPDATE CASCADE;
 
 -- AddForeignKey
-ALTER TABLE "oilfield_wells" ADD CONSTRAINT "oilfield_wells_wellId_fkey" FOREIGN KEY ("wellId") REFERENCES "well"("id") ON DELETE CASCADE ON UPDATE CASCADE;
+ALTER TABLE "oilfield_wells" ADD CONSTRAINT "oilfield_wells_well_id_fkey" FOREIGN KEY ("well_id") REFERENCES "well"("id") ON DELETE CASCADE ON UPDATE CASCADE;
 
 -- AddForeignKey
 ALTER TABLE "calculation" ADD CONSTRAINT "calculation_well_id_fkey" FOREIGN KEY ("well_id") REFERENCES "well"("id") ON DELETE SET NULL ON UPDATE CASCADE;

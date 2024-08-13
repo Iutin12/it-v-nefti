@@ -8,7 +8,7 @@ logs
 *.log
 npm-debug.log*
 pnpm-debug.log*
-yarn-debug.log*
+yarn-debug.log*well
 yarn-error.log*
 lerna-debug.log*
 
@@ -36,11 +36,11 @@ lerna-debug.log*
 !.vscode/extensions.json
 
 # dotenv environment variable files
-.env
-.env.development.local
-.env.test.local
-.env.production.local
-.env.local
+# .env
+# .env.development.local
+# .env.test.local
+# .env.production.local
+# .env.local
 
 # temp directory
 .temp
