@@ -8,13 +8,14 @@ import './ActionHeaderWindow.css'
 import { Layout } from '@consta/uikit/Layout';
 
 const ActionHeaderWindow = () => {
-    return
+    return (
     <Layout className='header-arrow'>
         <Flex flexDirection='column' justifyContent='between' alignItems='center'>
             <Text>Вход</Text>
             <Button label="Отправить" />
         </Flex>
     </Layout>
+    )
    
 }
 
