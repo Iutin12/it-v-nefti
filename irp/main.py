@@ -1,4 +1,3 @@
-import json
 import math
 from fastapi import FastAPI, HTTPException
 import numpy as np
@@ -22,7 +21,7 @@ class CalculationInput(BaseModel):
     FluidVoumeFactor: float = Field(ge=1, le=2.1)
     SupplyContourRadius: float = Field(ge=100, le=1000)
     WellRadius: float = Field(ge=0.05, le=0.3)
-    Skin: float = Field(ge=-3, le=10)
+    SkinFactor: float = Field(ge=-3, le=10)
     AverageReservoirePressure: float = Field(ge=100, le=300)
     SaturationPressure: float = Field(ge=1, le=100)
 
@@ -35,7 +34,7 @@ FluidViscosity              - Вязкость флюида ( сП -> Па*с ) 
 FluidVoumeFactor            - Объемный коэффициент флюида
 SupplyContourRadius         - радиус контура питания
 WellRadius                  - радиус скважины
-Skin                        - скин фактор скважины
+SkinFactor                  - скин фактор скважины
 
 Q                           - синтетическая кривая IPR c поправкой Вогеля
 AverageReservoirePressure   - среднее пластовое давление (бар -> Па )
@@ -56,7 +55,7 @@ def calculate(inputData: CalculationInput) -> object:
     FluidVoumeFactor = inputData.FluidVoumeFactor
     SupplyContourRadius = inputData.SupplyContourRadius
     WellRadius = inputData.WellRadius
-    Skin = inputData.Skin
+    Skin = inputData.SkinFactor
     SaturationPressure = inputData.SaturationPressure
 
     p_wf = np.arange(StartPwf, EndPwf + StepPwf, StepPwf).tolist()
