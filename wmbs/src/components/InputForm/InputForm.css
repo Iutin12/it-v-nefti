@@ -15,3 +15,19 @@
 .input-form-btn-clear:hover {
     background-color: var(--color-typo-warning) !important;
 }
+
+.modal {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    width: 350px;
+    height: 150px;
+}
+
+.modal-btns {
+    margin-top: 25px;
+    display: flex;
+    width: 100%;
+    justify-content: space-around;
+}

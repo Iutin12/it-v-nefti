@@ -1,5 +1,3 @@
-import SelectWithAdd from "./components/SelectWithAdd/SelectWithAdd";
-
 const data = [
     {
         id: 'WellHeadPressure',

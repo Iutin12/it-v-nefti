@@ -28,3 +28,12 @@
     display: none;
 }
 
+.modal-add {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    width: 450px;
+    height: 200px;
+}

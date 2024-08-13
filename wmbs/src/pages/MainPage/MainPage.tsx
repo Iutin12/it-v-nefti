@@ -2,9 +2,9 @@ import Header from "../../components/Header/Header";
 import {Layout} from "@consta/uikit/Layout";
 import InputForm from "../../components/InputForm/InputForm";
 import SelectWithAdd from "../../components/SelectWithAdd/SelectWithAdd";
-import {Text} from "@consta/uikit/Text";
 import Footer from "../../components/Footer/Footer";
 import React from "react";
+import Chart from "../../components/Chart/Chart";
 
 const MainPage = () => {
     return <>
@@ -18,8 +18,8 @@ const MainPage = () => {
                     <SelectWithAdd label={'Месторождение'}/>
                     <SelectWithAdd label={'Скважина'}/>
                 </Layout>
-                <Layout>
-                    <Text>Здесь будет график</Text>
+                <Layout flex={3} direction="column">
+                    <Chart/>
                 </Layout>
             </Layout>
         </Layout>
