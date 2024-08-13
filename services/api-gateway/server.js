@@ -13,7 +13,7 @@ app.use((req, res, next) => {
 })
 
 app.use(
-  '/api/node-analysis',
+  '/node-analysis',
   createProxyMiddleware({
     target: process.env.NODE_ANALYSIS_MICROSERVICE_URL,
     changeOrigin: true,

@@ -40,6 +40,28 @@ services:
       db:
         condition: service_healthy
 
+  irp-svc:
+    container_name: irp-svc
+    build:
+      context: ../irp
+      dockerfile: ./dockerfile
+    ports:
+      - 9000:9000
+    depends_on:
+      db:
+        condition: service_healthy
+
+  vlp-svc:
+    container_name: vlp-svc
+    build:
+      context: ../vlp
+      dockerfile: ./Dockerfile
+    ports:
+      - 8000:8000
+    depends_on:
+      db:
+        condition: service_healthy
+
   frontend:
     container_name: frontend
     build:
