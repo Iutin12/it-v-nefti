@@ -21,9 +21,9 @@ class CalculationResponseSchema(BaseModel):
 
 
 class CalculationRequestSchema(BaseModel):
-    start_pwf: float = Field(alias='StartPwf')
-    end_pwf: float = Field(alias='EndPwf')
-    step_pwf: float = Field(alias='StepPwf')
+    start_pwf: float = Field(alias='StartPwf', default=None)
+    end_pwf: float = Field(alias='EndPwf', default=None)
+    step_pwf: float = Field(alias='StepPwf', default=None)
     well_head_pressure: float = Field(alias='WellHeadPressure')
     depth: float = Field(ge=1000, le=3000, alias='Depth')
     fluid_compressibility: float = Field(ge=4*(10**(-9)), le=6*(10**(-9)), alias='FluidCompressibility')
