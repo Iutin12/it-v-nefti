@@ -5,6 +5,7 @@ import SelectWithAdd from "../../components/SelectWithAdd/SelectWithAdd";
 import Footer from "../../components/Footer/Footer";
 import React from "react";
 import Chart from "../../components/Chart/Chart";
+import '../MainPage/MainPage.css'
 
 const MainPage = () => {
     return <>
@@ -13,7 +14,7 @@ const MainPage = () => {
             <Layout flex={1}>
                 <InputForm/>
             </Layout>
-            <Layout flex={2} direction="column">
+            <Layout flex={2} direction="column" className={'main-left-container'}>
                 <Layout>
                     <SelectWithAdd label={'Месторождение'}/>
                     <SelectWithAdd label={'Скважина'}/>
