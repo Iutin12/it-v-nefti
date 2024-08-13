@@ -88,7 +88,7 @@ class CalculationInput(BaseModel):
 def calculate(inputData: CalculationInput) -> object:
     StartPwf = inputData.StartPwf
     EndPwf = inputData.EndPwf
-    StepPwf = inputData.EndPwf
+    StepPwf = inputData.StepPwf
     AverageReservoirePressure = inputData.AverageReservoirePressure
     Permeability = inputData.Permeability
     Thickness = inputData.Thickness
@@ -98,6 +98,7 @@ def calculate(inputData: CalculationInput) -> object:
     WellRadius = inputData.WellRadius
     Skin = inputData.Skin
     SaturationPressure = inputData.SaturationPressure
+
     p_wf = np.arange(StartPwf, EndPwf + StepPwf, StepPwf).tolist()
     Q = []
     if EndPwf > AverageReservoirePressure:
