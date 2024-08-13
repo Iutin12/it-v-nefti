@@ -3,25 +3,31 @@ import IOilfieldData from "../types/oilfield.type";
 import IWellsData from "../types/wells.type";
 import IWellsAndOilfieldData from "../types/wellsAndOilfield.type";
 
-const ApiService = () => {
-    const getOilfield = () => {
+export default class ApiService {
+    static getOilfield() {
         return http.get<Array<IOilfieldData>>("/oilfield");
     }
 
-    const postOilfield = () => {
-        return http.post<IOilfieldData>("/oilfield");
+    static postOilfield(name: string) {
+        const data = {
+            name: name,
+        }
+        return http.post<IOilfieldData>('/oilfield', data);
     }
 
-    const postLinkWell = (wellName: string, oilfieldId: string) => {
-        return http.post<Array<IWellsAndOilfieldData>>("/oilfield/linkWell");
+    static postLinkWell(wellName: string, oilfieldId: string) {
+        const data = {
+            wellName: wellName,
+            oilfieldId: oilfieldId
+        }
+        return http.post<IWellsAndOilfieldData>("/oilfield/linkWell", data);
     }
 
-    const getWells = (oilfieldId: string) => {
-        return http.get<Array<IWellsData>>(`${oilfieldId}/wells`);
+    static getWells(oilfieldId: string) {
+        return http.get<Array<IWellsData>>(`/oilfield/${oilfieldId}/wells`);
     }
 
-    // const postCalc = () => {
+    // static postCalc () {
     //     return http.post<Array>("/calc");
     // }
 }
-export default ApiService

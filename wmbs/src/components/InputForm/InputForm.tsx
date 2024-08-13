@@ -11,9 +11,9 @@ import {Modal} from "@consta/uikit/Modal";
 
 const initialState = data.reduce((prev, curr) => {
     prev[curr.id] = {value: null, min: curr.min, max: curr.max}
-    
+
     return prev
-}, {}as {[key:string]:{value: number|null, min: number, max:number}})
+}, {} as { [key: string]: { value: number | null, min: number, max: number } })
 
 const InputForm = () => {
     const [value, setValue] = useState(0)
@@ -23,14 +23,15 @@ const InputForm = () => {
 
     const [form, setForm] = useState(initialState)
 
-    const isValid = Object.values(form).every(({value, min, max}) =>value && value >= min && value <= max)
+    const isValid = Object.values(form).every(({value, min, max}) => value && value >= min && value <= max)
 
-    const onChange = (name:string, value:number|null) => {
-        setForm((prev) => ({...prev, [name]:{...prev[name], value}}))
+    const onChange = (name: string, value: number | null) => {
+        setForm((prev) => ({...prev, [name]: {...prev[name], value}}))
     }
 
     const onReset = () => {
-        setForm(initialState)
+        setForm(initialState);
+        setIsModalClearOpen(false);
     }
 
     return <Layout>
@@ -41,7 +42,9 @@ const InputForm = () => {
             <GridItem><Text size={'l'} align={'center'}>Значение</Text></GridItem>
 
             {/* Формы */}
-            {data.map((item, index) => <ParamAndValue value={form[item.id].value} id={item.id} text={item.text} min={item.min} max={item.max} measure={item.measure} key={item.id} onChange={onChange}/>)}
+            {data.map((item, index) => <ParamAndValue value={form[item.id].value} id={item.id} text={item.text}
+                                                      min={item.min} max={item.max} measure={item.measure} key={item.id}
+                                                      onChange={onChange}/>)}
             {/* Кнопки */}
             <GridItem col={2} className={'input-form-btns'}>
                 <Button className={'input-form-btn-clear'} label="Очистить"
@@ -51,7 +54,7 @@ const InputForm = () => {
             </GridItem>
         </Grid>
 
-        
+
         <Modal
             isOpen={isModalClearOpen}
             hasOverlay
