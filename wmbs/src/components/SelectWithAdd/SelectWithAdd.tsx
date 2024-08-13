@@ -1,7 +1,7 @@
 import {Select} from "@consta/uikit/Select";
 import {useState} from "react";
 import {Button} from "@consta/uikit/Button";
-import { IconAdd } from '@consta/icons/IconAdd';
+import {IconAdd} from '@consta/icons/IconAdd';
 import {TextField} from "@consta/uikit/TextField";
 import './SelectWithAdd.css';
 
@@ -9,7 +9,7 @@ interface SelectWithAddProps {
     label: string;
 }
 
-const SelectWithAdd = (props: SelectWithAddProps) => {
+const SelectWithAdd: React.FC<SelectWithAddProps> = (props) => {
 
     type Item = {
         label: string;
@@ -34,21 +34,22 @@ const SelectWithAdd = (props: SelectWithAddProps) => {
     const [value, setValue] = useState<Item | null>();
     const [hide, setHide] = useState<boolean>(true);
 
-    return <div className="select-and-add">
+    return <div className={'select-and-add'}>
         <div className={'select-div'}>
             <Select
                 label={props.label}
-                caption={value?.label}
                 placeholder="Выберите значение"
                 items={items}
                 value={value}
                 onChange={setValue}
                 form={'round'}
                 size={'s'}
+                disabled={!hide}
             />
-            <Button className={'select-div-btn'} form="round" iconLeft={IconAdd} onlyIcon size={'s'} disabled={!hide} onClick={() => setHide(false)}/>
+            <Button className={'select-div-btn'} form="round" iconLeft={IconAdd} onlyIcon size={'s'} disabled={!hide}
+                    onClick={() => setHide(false)}/>
         </div>
-        <div className={hide ? 'input-div hide': 'input-div'}>
+        <div className={hide ? 'input-div hide' : 'input-div'}>
             <TextField placeholder="Введите название" size={'s'}/>
             <Button className={'input-div-btn'} label="Добавить" size={'s'}/>
         </div>

@@ -1,30 +1,30 @@
-.select-and-add{
-    display: flex;
-    flex-direction: column;
+.select-and-add {
+    width: 100%;
+    padding: 20px 10px;
 }
 
-.select-div{
+.select-div {
     display: flex;
     align-items: center;
-    flex-grow: 1;
+    flex-grow: 2;
 }
 
-.select-div-btn{
+.select-div-btn {
     margin-left: 8px;
     margin-top: 24px;
 }
 
-.input-div{
+.input-div {
     display: flex;
     align-items: center;
     margin-top: 15px;
 }
 
-.input-div-btn{
+.input-div-btn {
     margin-left: 8px;
 }
 
-.hide{
+.hide {
     display: none;
 }
 
