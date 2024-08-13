@@ -63,13 +63,10 @@ def calculate(inputData: CalculationInput) -> object:
     Q = []
     SecInSut = 86400
 
-    # Конвертируем в м^2
+    # Конвертируем из мД в м^2
 
     Permeability = Permeability * (1.02 * 10 ** (-15))
-    # перевод из бар в паскали
 
-    # AverageReservoirePressure *= 10**5
-    # SaturationPressure *= 10**5
     FluidViscosity /= 1000
     if EndPwf > AverageReservoirePressure:
         raise HTTPException(status_code=422, detail="Input should be less than or equal to AverageReservoirePressure ")
@@ -85,8 +82,6 @@ def calculate(inputData: CalculationInput) -> object:
                               (p_wf[i]) / AverageReservoirePressure) ** 2)) * SecInSut)
     except:
         print("Ошибка")
-    #перевод из баров -> Атмосферы
-    p_wf = map(lambda x: x / 1.013, p_wf)
 
     return {
         'Q': Q,
