@@ -75,24 +75,21 @@ const SelectWithAdd = () => {
     }
     const [error, setError] = useState('');
 
-    // Регулярное выражение для проверки кириллицы и латиницы
-    const regex = /^[A-Za-zА-Яа-яЁё0-9\s]+$/; // Разрешаем латиницу, кириллицу, цифры и пробелы
+    const regex = /^[A-Za-zА-Яа-яЁё0-9]+$/;
 
     const onClickOilfield = () => {
-        // Проверяем, соответствует ли введенное значение регулярному выражению
         if (valueOilfield && regex.test(valueOilfield)) {
             setIsModalOilfieldOpen(true);
         } else {
-            setError('Введите только буквы кириллицы или латиницы'); // Устанавливаем сообщение об ошибке
+            setError('Введите только буквы кириллицы или латиницы или пробел');
         }
     };
 
     const onClickWell = () => {
-        // Проверяем, соответствует ли введенное значение регулярному выражению
         if (valueWell && regex.test(valueWell)) {
             setIsModalWellOpen(true);
         } else {
-            setError('Введите только буквы кириллицы или латиницы'); // Устанавливаем сообщение об ошибке
+            setError('Введите только буквы кириллицы или латиницы');
         }
     };
 
