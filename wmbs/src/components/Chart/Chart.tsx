@@ -2,32 +2,15 @@ import React from 'react';
 
 import ReactECharts from 'echarts-for-react';
 import { useEffect, useRef, useState } from 'react';
+import { Text } from '@consta/uikit/Text';
 
 const massivX: number[] = [0, 100, 200, 300, 400, 500]
 const massivA: number[] = [200, 175, 150, 125, 100, 75, 50, 50, 25, 0]
 const massivB: number[] = [170, 170, 170, 170, 170, 170, 170, 170, 170]
-const pointInterspection: number[][] = [[120, 170],[1, 0]]
+const pointIntersection: number[][] = [[120, 170]]
 
 const Chart: React.FC = () => {
- // let [indexPoint, setIndexPoint] = useState(1)
  const chartRef = useRef<ReactECharts>(null)
- // useEffect(() => {   
- //     for (let i = 0; i<pointInterspection.length; i++) {
- //         chartRef.current?.getEchartsInstance().setOption({
- //             series: [{
- //                 name: `point${i+1}`,
- //                 type:'scatter',
- //                 data: [pointInterspection[i]],
- //                 symbolSize: 10,
- //                 itemStyle: {
- //                     color: 'red',
- //                 },
- //                 zlevel: 1 
- //         }],
- //     })
- //     console.log(i, pointInterspection)
- // }
- // }, [])
 
  const dataFunc1: number[][] = massivX.map((value, index) => [value, massivA[index]])
  const dataFunc2: number[][] = massivX.map((value, index) => [value, massivB[index]])
@@ -79,25 +62,8 @@ const Chart: React.FC = () => {
          showSymbol: false,
          smooth: true
        },
-     //   { 
-     //     name: `point${1}`,
-     //     type: 'scatter',
-     //     symbolSize: 10,
-     //     itemStyle: {
-     //         color: 'red',
-     //     },
-     //     zlevel: 1 
-     //   } ,
-     //   { 
-     //     name: `point${2}`,
-     //     type: 'scatter',
-     //     symbolSize: 10,
-     //     itemStyle: {
-     //         color: 'red',
-     //     },
-     //     zlevel: 1 
-     //   } ,
-       pointInterspection.map((data, index) => ({
+
+       pointIntersection ? [...pointIntersection.map((data, index) => ({
          name: `point${index + 1}`,
          type: 'scatter',
          data: [data],
@@ -106,7 +72,7 @@ const Chart: React.FC = () => {
              color: 'red',
          },
          zlevel: 1 
-       } )),
+       } ))] : []
 
      ],
      tooltip: { 
@@ -124,12 +90,9 @@ const Chart: React.FC = () => {
              }); 
              return tooltipContent; 
          } 
-     },    
-     
+     },     
    };
-
-
-   console.log(pointInterspection.map((data, index) => ({
+   console.log(pointIntersection.map((data, index) => ({
      name: `point${index + 1}`,
      type: 'scatter',
      data: [data],
@@ -139,31 +102,10 @@ const Chart: React.FC = () => {
      },
      zlevel: 1 
    } )))
- //   console.log(chartRef.current?.getEchartsInstance().getOption)
-
- //   const addInsterseptionMark = (point: number[]) => {
-
-
- //     console.log(indexPoint, point)
- //     chartRef.current?.getEchartsInstance().setOption({
- //         series: [{
- //             name: `point`,
- //             type:'scatter',
- //             data: point,
- //             symbolSize: 10,
- //             itemStyle: {
- //                 color: 'red',
- //             },
- //             zlevel: 1 
- //     }],
- //     })
-     
- //     console.log(indexPoint, point)
- //   }
-
  return (
      <>
-         <ReactECharts ref={chartRef} option={options} />;
+         <ReactECharts ref={chartRef} option={options} />
+         {pointIntersection ? pointIntersection.map((data, index) => (<Text size='m'>Точка пересечения {index+1}: ({data[0]}; {data[1]})</Text>)) : <Text>Точек пересечения нет</Text>}
      </>
  )
 }
