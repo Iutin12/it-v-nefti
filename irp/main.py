@@ -6,7 +6,7 @@ app = FastAPI()
 
 @app.get("/")
 def read_root():
-    return {"Hello": "222"}
+    return {"neft": "neft"}
 
 
 """
@@ -25,7 +25,10 @@ pB      - давление насыщения
 
 """
 @app.get("/irp/calculate")
-def calculate(k: float,
+def calculate(pWfStart:int,
+              pWfEnd: int,
+              pWfStep: int,
+              k: float,
               h: float,
               vn: float,
               B: float,
@@ -36,16 +39,16 @@ def calculate(k: float,
               pB:float
               )->object:
 
-    P_WF = [0, 25, 49, 73, 97, 121, 145, 169, 193, 200]
+
+    p_wf = [i for i in range(pWfStart,pWfEnd+pWfStep, pWfStep)]
     Q = []
-    res = {}
     try:
         PI = (2 * math.pi * k * h)/(vn * B * (math.log(r/rw) - (1/2) + s))
-        for i in range(len(P_WF)):
-            Q.append(((PI * (pAvg - pB))/(1 - 0.2 * (pB/pAvg) - 0.8 * (P_WF[i]/pAvg)**2)) * (1 - 0.2 * (P_WF[i]/pAvg) - 0.8 * (P_WF[i]/pAvg)**2))
+        for i in range(len(p_wf)):
+            Q.append(((PI * (pAvg - pB))/(1 - 0.2 * (pB/pAvg) - 0.8 * (p_wf[i]/pAvg)**2)) * (1 - 0.2 * (p_wf[i]/pAvg) - 0.8 * (p_wf[i]/pAvg)**2))
     except Exception:
         print("Ошибка")
-    res = json.dumps(Q)
-    print(res)
-
-    return res
+    return {
+        'Q': json.dumps(Q),
+        'p_wf': json.dumps(p_wf)
+    }
