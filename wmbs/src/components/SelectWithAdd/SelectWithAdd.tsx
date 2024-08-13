@@ -89,7 +89,7 @@ const SelectWithAdd = () => {
         if (valueWell && regex.test(valueWell)) {
             setIsModalWellOpen(true);
         } else {
-            setError('Введите только буквы кириллицы или латиницы');
+            setError('Введите только буквы кириллицы или латиницы или пробел');
         }
     };
 
