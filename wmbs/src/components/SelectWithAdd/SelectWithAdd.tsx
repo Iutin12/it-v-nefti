@@ -37,6 +37,16 @@ const SelectWithAdd: React.FC<SelectWithAddProps> = (props) => {
     const [hide, setHide] = useState<boolean>(true);
     const [isModalOpen, setIsModalOpen] = useState(false);
 
+    const addField = () => {
+
+        console.log('Field');
+    }
+
+    const addWell = () => {
+        console.log('Well');
+
+    }
+
     return <div className={'select-and-add'}>
         <div className={'select-div'}>
             <Select
@@ -55,7 +65,9 @@ const SelectWithAdd: React.FC<SelectWithAddProps> = (props) => {
         <div className={hide ? 'input-div hide' : 'input-div'}>
             <TextField placeholder="Введите название" size={'s'}
                        onChange={(val) => setValue(val as Item | null | undefined)}/>
-            <Button className={'input-div-btn'} label="Добавить" size={'s'} onClick={() => setIsModalOpen(true)}/>
+            <Button className={'input-div-btn'} label="Добавить" size={'s'} disabled={!value}
+                    onClick={() => setIsModalOpen(true)}
+            />
         </div>
 
         <Modal
@@ -74,7 +86,7 @@ const SelectWithAdd: React.FC<SelectWithAddProps> = (props) => {
                     size="m"
                     view="primary"
                     label="Да"
-                    // onClick={}
+                    onClick={() => props.label === 'Месторождение' ? addField() : addWell()}
                 />
                 <Button
                     size="m"
