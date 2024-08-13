@@ -1,7 +1,6 @@
 import React from 'react';
 import './App.css';
 import {Theme, presetGpnDefault} from '@consta/uikit/Theme';
-import {Layout} from '@consta/uikit/Layout';
 import {
     BrowserRouter as Router, Routes, Route
 } from "react-router-dom";

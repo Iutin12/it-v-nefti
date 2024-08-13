@@ -14,7 +14,7 @@ interface ParamAndValueProps {
 }
 
 const ParamAndValue: React.FC<ParamAndValueProps> = (props) => {
-    const [value, setValue] = useState<string>(props.value);
+    // const [value, setValue] = useState<string>(props.value);
 
     return <>
         <GridItem><Text size={'s'}>{props.text}</Text></GridItem>

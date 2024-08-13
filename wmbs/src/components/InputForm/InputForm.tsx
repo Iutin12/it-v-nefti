@@ -1,4 +1,3 @@
-import SelectWithAdd from "../SelectWithAdd/SelectWithAdd";
 import './InputForm.css';
 import ParamAndValue from "../ParamAndValue/ParamAndValue";
 import {Text} from "@consta/uikit/Text";
