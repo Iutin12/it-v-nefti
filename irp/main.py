@@ -87,6 +87,7 @@ def calculate(inputData: CalculationInput) -> object:
         print("Ошибка")
     #перевод из баров -> Атмосферы
     p_wf = map(lambda x: x / 1.013, p_wf)
+
     return {
         'Q': Q,
         'p_wf': p_wf
