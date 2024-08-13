@@ -1,8 +1,10 @@
 import json
 import math
 from fastapi import FastAPI
+import numpy as np
 
 app = FastAPI()
+
 
 @app.get("/")
 def read_root():
@@ -24,28 +26,33 @@ AverageReservoirePressure   - среднее пластовое давление
 SaturationPressure          - давление насыщения 
 
 """
+
+
 @app.get("/irp/calculate")
-def calculate(StartPwf: int,
-              EndPwf: int,
-              StepPwf: int,
-              Permeability : float,
-              Thickness : float,
-              FluidViscosity : float,
-              FluidVoumeFactor : float,
-              SupplyContourRadius : float,
-              WellRadius : float,
-              Skin : float,
-              AverageReservoirePressure : float,
-              SaturationPressure :float
-              )->object:
-
-
-    p_wf = [i for i in range(StartPwf,EndPwf+StepPwf, StepPwf)]
+def calculate(StartPwf: float,
+              EndPwf: float,
+              StepPwf: float,
+              Permeability: float,
+              Thickness: float,
+              FluidViscosity: float,
+              FluidVoumeFactor: float,
+              SupplyContourRadius: float,
+              WellRadius: float,
+              Skin: float,
+              AverageReservoirePressure: float,
+              SaturationPressure: float
+              ) -> object:
+    p_wf = np.arange(StartPwf, EndPwf + StepPwf, StepPwf).tolist()
     Q = []
     try:
-        PI = (2 * math.pi * Permeability * Thickness)/(FluidViscosity * FluidVoumeFactor * (math.log(SupplyContourRadius/WellRadius) - (1/2) + Skin))
+        PI = (2 * math.pi * Permeability * Thickness) / (
+                FluidViscosity * FluidVoumeFactor * (math.log(SupplyContourRadius / WellRadius) - (1 / 2) + Skin))
         for i in range(len(p_wf)):
-            Q.append(((PI * (AverageReservoirePressure - SaturationPressure))/(1 - 0.2 * (SaturationPressure/AverageReservoirePressure) - 0.8 * (p_wf[i]/AverageReservoirePressure)**2)) * (1 - 0.2 * (p_wf[i]/AverageReservoirePressure) - 0.8 * (p_wf[i]/AverageReservoirePressure)**2))
+            Q.append(((PI * (AverageReservoirePressure - SaturationPressure)) / (
+                    1 - 0.2 * (SaturationPressure / AverageReservoirePressure) - 0.8 * (
+                    p_wf[i] / AverageReservoirePressure) ** 2)) * (
+                             1 - 0.2 * (p_wf[i] / AverageReservoirePressure) - 0.8 * (
+                             p_wf[i] / AverageReservoirePressure) ** 2))
     except:
         print("Ошибка")
     return {
