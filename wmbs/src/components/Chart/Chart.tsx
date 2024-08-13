@@ -63,7 +63,7 @@ const Chart: React.FC = () => {
          smooth: true
        },
 
-       pointIntersection ? [...pointIntersection.map((data, index) => ({
+       ...(pointIntersection ? pointIntersection.map((data, index) => ({
          name: `point${index + 1}`,
          type: 'scatter',
          data: [data],
@@ -72,7 +72,7 @@ const Chart: React.FC = () => {
              color: 'red',
          },
          zlevel: 1 
-       } ))] : []
+       } )) : [])
 
      ],
      tooltip: { 
@@ -105,7 +105,7 @@ const Chart: React.FC = () => {
  return (
      <>
          <ReactECharts ref={chartRef} option={options} />
-         {pointIntersection ? pointIntersection.map((data, index) => (<Text size='m'>Точка пересечения {index+1}: ({data[0]}; {data[1]})</Text>)) : <Text>Точек пересечения нет</Text>}
+         {pointIntersection ? pointIntersection.map((data, index) => (<Text size='m' key={index}>Точка пересечения {index+1}: ({data[0]}; {data[1]})</Text>)) : <Text>Точек пересечения нет</Text>}
      </>
  )
 }

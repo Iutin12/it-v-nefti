@@ -18,7 +18,7 @@ const MainPage = () => {
                     <SelectWithAdd label={'Месторождение'}/>
                     <SelectWithAdd label={'Скважина'}/>
                 </Layout>
-                <Layout>
+                <Layout flex={3} direction="column">
                     <Chart/>
                 </Layout>
             </Layout>
