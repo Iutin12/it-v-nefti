@@ -8,8 +8,73 @@ datasource db {
 }
 
 model Well {
-  id         String   @id @default(uuid())
-  name       String   @unique
+  id   String @id @default(uuid())
+  name String @unique
+
   created_at DateTime @default(now())
   updated_at DateTime @default(now())
+
+  oilfield   Oilfield? @relation(fields: [oilfieldId], references: [id])
+  oilfieldId String?
+
+  OilfieldWells OilfieldWells[]
+  calculations  Calculation[]
+
+  @@unique([id, oilfieldId])
+}
+
+model Oilfield {
+  id   String @id @default(uuid())
+  name String
+
+  created_at DateTime @default(now())
+  updated_at DateTime @default(now())
+
+  wells         Well[]
+  OilfieldWells OilfieldWells[]
+}
+
+model OilfieldWells {
+  id         String @id @unique @default(cuid())
+  oilfieldId String
+  wellId     String
+
+  oilfield Oilfield @relation(fields: [oilfieldId], references: [id], onDelete: Cascade)
+  well     Well     @relation(fields: [wellId], references: [id], onDelete: Cascade)
+}
+
+model Calculation {
+  id String @id @unique @default(uuid())
+
+  WellHeadPressure          Float
+  Depth                     Float
+  FluidCompressibility      Float
+  FluidDensity              Float
+  PipeDiameter              Float
+  InclinationAngle          Float
+  SectionsNumber            Float
+  MoodyCoefficient          Float
+  StartLiquidRate           Float
+  Permeability              Float
+  Thickness                 Float
+  FluidViscosity            Float
+  FluidVoumeFactor          Float
+  SaturationPressure        Float
+  AverageReservoirePressure Float
+  SupplyContourRadius       Float
+  WellRadius                Float
+  SkinFactor                Float
+
+  Well   Well?   @relation(fields: [wellId], references: [id])
+  wellId String?
+
+  created_at DateTime @default(now())
+  updated_at DateTime @default(now())
+}
+
+model CalculationResult {
+  id String @id @unique @default(uuid())
+
+  result     Json
+  created_at DateTime @default(now())
 }

@@ -1,11 +1,11 @@
 import { Body, Controller, Get, InternalServerErrorException, NotFoundException, Param, Post } from '@nestjs/common'
-import { AppService, CreateWellDto } from './app.service'
+import { WellDataService, CreateWellDto } from './wellData.service'
 import { Well } from '@prisma/client'
 
 // todo: add validation
 @Controller()
-export class AppController {
-  constructor(private readonly appService: AppService) {}
+export class WellDataController {
+  constructor(private readonly appService: WellDataService) {}
 
   @Get()
   async getAll(): Promise<Well[]> {

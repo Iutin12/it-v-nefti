@@ -18,27 +18,27 @@ services:
     volumes:
       - db_postgres_data:/var/lib/postgresql/data
 
-  api-gateway:
-    container_name: api-gateway
-    build:
-      context: ../services/api-gateway
-      dockerfile: ApiGateway.Dockerfile
-    ports:
-      - 3000:3000
-    depends_on:
-      db:
-        condition: service_healthy
+  # api-gateway:
+  #   container_name: api-gateway
+  #   build:
+  #     context: ../services/api-gateway
+  #     dockerfile: ApiGateway.Dockerfile
+  #   ports:
+  #     - 3000:3000
+  #   depends_on:
+  #     db:
+  #       condition: service_healthy
 
-  well-data-svc:
-    container_name: well-data-svc
-    build:
-      context: ../services/well-data-svc
-      dockerfile: WellDataSvc.Dockerfile
-    ports:
-      - 7000:7000
-    depends_on:
-      db:
-        condition: service_healthy
+  # well-data-svc:
+  #   container_name: well-data-svc
+  #   build:
+  #     context: ../services/well-data-svc
+  #     dockerfile: WellDataSvc.Dockerfile
+  #   ports:
+  #     - 7000:7000
+  #   depends_on:
+  #     db:
+  #       condition: service_healthy
 
 volumes:
   db_postgres_data:

@@ -29,7 +29,7 @@ app.use(
 )
 
 app.use(
-  '/api/well',
+  '/api/oilfield',
   createProxyMiddleware({ target: process.env.WELLDATA_MICROSERVICE_URL, changeOrigin: true, logger: console })
 )
 

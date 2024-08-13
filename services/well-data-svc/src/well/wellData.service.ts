@@ -1,5 +1,5 @@
 import { Injectable } from '@nestjs/common'
-import { PrismaService } from './db/prisma.service'
+import { PrismaService } from '../db/prisma.service'
 import { Well } from '@prisma/client'
 
 export type CreateWellDto = {
@@ -7,7 +7,7 @@ export type CreateWellDto = {
 }
 
 @Injectable()
-export class AppService {
+export class WellDataService {
   constructor(private prisma: PrismaService) {}
 
   async getById(id: string): Promise<Well> {
