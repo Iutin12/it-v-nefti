@@ -1,17 +1,17 @@
-.input-form{
+.input-form {
     padding: 20px;
 }
 
-.input-form-btns{
+.input-form-btns {
     display: flex;
     justify-content: end;
     gap: 20px;
 }
 
-.input-form-btn-clear{
-    background-color: var(--color-bg-warning);
+.input-form-btn-clear {
+    background-color: var(--color-bg-warning) !important;
 }
 
-.input-form-btn-clear:hover{
+.input-form-btn-clear:hover {
     background-color: var(--color-typo-warning) !important;
 }

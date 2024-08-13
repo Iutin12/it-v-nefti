@@ -1,4 +1,18 @@
 .header-arrow{
-    position: relative;
-    
+    position: absolute;
+    padding: 13px;
+    top: 60px;
+    right: 12px;
+    background-color: var(--color-bg-brand);
+    animation: fadeIn 0.3s ease-in-out;
+    border-bottom-left-radius:10px ;
+    border-bottom-right-radius:10px ;
 }
+.header-arrow .Text{
+    color: var(--color-bg-default);
+}
+@keyframes fadeIn {
+    0% { opacity: 0; }
+    100% { opacity: 1; }
+  }
+

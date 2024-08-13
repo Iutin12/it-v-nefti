@@ -1,17 +1,19 @@
-import React from 'react'; 
-import { Button } from '@consta/uikit/Button';
-import { Theme, presetGpnDefault } from '@consta/uikit/Theme';
-import { TextField } from '@consta/uikit/TextField';
-import Flex from '@react-css/flex';
+import { useNavigate } from 'react-router';
 import {Text} from "@consta/uikit/Text";
 import './ActionHeaderWindow.css'
-import { Layout } from '@consta/uikit/Layout';
 
 const ActionHeaderWindow = () => {
+
+    const navigate = useNavigate();
+
+    const handleLogoutClick = () => {
+        navigate('/Authorization');
+    };
+
     return (
-        <Layout className='header-arrow'>
-                <Text>Выйти</Text>
-        </Layout>
+        <div className='header-arrow' onClick={handleLogoutClick}>
+                <Text size={'m'} className={'header-arrow-text'}>Выйти</Text>
+        </div>
     )
    
 }
