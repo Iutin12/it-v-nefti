@@ -2,7 +2,7 @@ import {Select} from "@consta/uikit/Select";
 import {useEffect, useState} from "react";
 import {Button} from "@consta/uikit/Button";
 import {IconAdd} from '@consta/icons/IconAdd';
-import {TextField, TextFieldPropValue} from "@consta/uikit/TextField";
+import {TextField} from "@consta/uikit/TextField";
 import './SelectWithAdd.css';
 import {Text} from "@consta/uikit/Text";
 import {Modal} from "@consta/uikit/Modal";
@@ -55,7 +55,8 @@ const SelectWithAdd = () => {
     const addField = () => {
         ApiService.postOilfield(valueOilfield || '').then((response) => {
             getOilfield();
-            setSelectValueOilfield(response.data);
+            selectChanged(response.data);
+            setSelectValueWell(null);
             setValueOilfield(null);
         });
         setIsModalOilfieldOpen(false);
@@ -65,7 +66,6 @@ const SelectWithAdd = () => {
     const addWell = () => {
         ApiService.postLinkWell(valueWell || '', selectValueOilfield?.id || '').then((response) => {
             getWells(selectValueOilfield?.id || '');
-            console.log(response);
             setSelectValueWell(response.data.well);
             setValueWell(null);
         })
@@ -95,6 +95,7 @@ const SelectWithAdd = () => {
 
     const selectChanged = (value: IOilfieldData | null) => {
         setSelectValueOilfield(value);
+        setSelectValueWell(null);
         value && getWells(value.id);
     }
 
@@ -164,10 +165,10 @@ const SelectWithAdd = () => {
                     onChange={setSelectValueWell}
                     form={'round'}
                     size={'s'}
-                    disabled={!hideWell}
+                    disabled={!hideWell || selectValueOilfield == null}
                 />
                 <Button className={'select-div-btn'} form="round" iconLeft={IconAdd} onlyIcon size={'s'}
-                        disabled={!hideWell}
+                        disabled={!hideWell || selectValueOilfield == null}
                         onClick={() => setHideWell(false)}/>
             </div>
             <div className={hideWell ? 'input-div hide' : 'input-div'}>
