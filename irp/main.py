@@ -10,43 +10,43 @@ def read_root():
 
 
 """
-PI      - Индекс продуктивности скважины
-k       - Проницаемость пласта
-h       - Толщина пласта
-vn      - Вязкость нефти
-B       - Коэффициент объемного расширения ?? (Объемный коэффициент флюида)
-r       - радиус ??
-rw      - радиус скважины
-s       - скин фактор скважины
+PI                          - Индекс продуктивности скважины
+Permeability                - Проницаемость пласта
+Thickness                   - Толщина пласта
+FluidViscosity              - Вязкость флюида
+FluidVoumeFactor            - Коэффициент объемного расширения ?? (Объемный коэффициент флюида)
+SupplyContourRadius         - радиус контура питания
+WellRadius                  - радиус скважины
+Skin                        - скин фактор скважины
 
-Q       - синтетическая кривая IPR c поправкой Вогеля
-pAvg    - среднее пластовое давление
-pB      - давление насыщения 
+Q                           - синтетическая кривая IPR c поправкой Вогеля
+AverageReservoirePressure   - среднее пластовое давление
+SaturationPressure          - давление насыщения 
 
 """
 @app.get("/irp/calculate")
-def calculate(pWfStart:int,
+def calculate(pWfStart: int,
               pWfEnd: int,
               pWfStep: int,
-              k: float,
-              h: float,
-              vn: float,
-              B: float,
-              r: float,
-              rw: float,
-              s: float,
-              pAvg: float,
-              pB:float
+              Permeability : float,
+              Thickness : float,
+              FluidViscosity : float,
+              FluidVoumeFactor : float,
+              SupplyContourRadius : float,
+              WellRadius : float,
+              Skin : float,
+              AverageReservoirePressure : float,
+              SaturationPressure :float
               )->object:
 
 
     p_wf = [i for i in range(pWfStart,pWfEnd+pWfStep, pWfStep)]
     Q = []
     try:
-        PI = (2 * math.pi * k * h)/(vn * B * (math.log(r/rw) - (1/2) + s))
+        PI = (2 * math.pi * Permeability * Thickness)/(FluidViscosity * FluidVoumeFactor * (math.log(SupplyContourRadius/WellRadius) - (1/2) + Skin))
         for i in range(len(p_wf)):
-            Q.append(((PI * (pAvg - pB))/(1 - 0.2 * (pB/pAvg) - 0.8 * (p_wf[i]/pAvg)**2)) * (1 - 0.2 * (p_wf[i]/pAvg) - 0.8 * (p_wf[i]/pAvg)**2))
-    except Exception:
+            Q.append(((PI * (AverageReservoirePressure - SaturationPressure))/(1 - 0.2 * (SaturationPressure/AverageReservoirePressure) - 0.8 * (p_wf[i]/AverageReservoirePressure)**2)) * (1 - 0.2 * (p_wf[i]/AverageReservoirePressure) - 0.8 * (p_wf[i]/AverageReservoirePressure)**2))
+    except:
         print("Ошибка")
     return {
         'Q': json.dumps(Q),
