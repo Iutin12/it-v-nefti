@@ -8,18 +8,18 @@ import {useFlag} from "@consta/uikit/useFlag";
 
 
 interface ParamAndValueProps {
+    id:string;
     text: string;
     min: number;
     max: number;
-    // setValid: (value:boolean) => void
+    measure: string;
+    value:number|null;
+    onChange: ( name:string, value:number| null) => void
+
 }
 
 const ParamAndValue: React.FC<ParamAndValueProps> = (props) => {
-    const [value, setValue] = useState<number | null>();
-    const handleChange = (value:string|null) => setValue(value? parseFloat(value): null);
-
     const anchorRef = useRef<HTMLInputElement>(null);
-    const [isTooltipVisible, setIsTooltipVisible] = useFlag();
 
     return <>
     {/* Поле текста */} 
@@ -28,16 +28,18 @@ const ParamAndValue: React.FC<ParamAndValueProps> = (props) => {
         </GridItem>
      {/* Поле ввода */}
         <GridItem className={'flex'}>
-            <TextField size={'s'} min={props.min} max={props.max} type={'number'} 
+            <TextField size={'s'} min={props.min} max={props.max} value={props.value ? props.value.toString() : null} type={'number'} 
             incrementButtons={false} 
-            status={ value && ((value < props.min) || (value >= props.max)) ? 'alert' : undefined} 
+            status={ props.value && ((props.value < props.min) || (props.value > props.max)) ? 'alert' : undefined} 
             // caption={`От ${props.min} до ${props.max}`}
-            onChange={handleChange}
-            ref={anchorRef}/>
+            onChange={(value)=> { props.onChange(props.id,value ? parseFloat(value): null)}}
+            ref={anchorRef}
+            rightSide={props.measure}
+            />
 
         <Tooltip
                 placeholder="" onPointerEnterCapture={() => {}} onPointerLeaveCapture={() => {}}
-                isOpen={value && ((value < props.min) || (value >= props.max)) ? true : false}
+                isOpen={props.value && ((props.value < props.min) || (props.value > props.max)) ? true : false}
                 direction="upCenter"
                 spareDirection="downStartLeft"
                 anchorRef={anchorRef}
