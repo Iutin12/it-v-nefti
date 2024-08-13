@@ -1,7 +1,7 @@
 import React from 'react';
 
 import ReactECharts from 'echarts-for-react';
-import { useEffect, useRef, useState } from 'react';
+import { useRef } from 'react';
 import { Text } from '@consta/uikit/Text';
 
 const massivX: number[] = [0, 100, 200, 300, 400, 500]
