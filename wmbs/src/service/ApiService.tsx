@@ -2,6 +2,7 @@ import http from '../http-common'
 import IOilfieldData from "../types/oilfield.type";
 import IWellsData from "../types/wells.type";
 import IWellsAndOilfieldData from "../types/wellsAndOilfield.type";
+import IPointsData from "../types/points.type";
 
 export default class ApiService {
     static getOilfield() {
@@ -27,7 +28,7 @@ export default class ApiService {
         return http.get<Array<IWellsData>>(`/oilfield/${oilfieldId}/wells`);
     }
 
-    // static postCalc () {
-    //     return http.post<Array>("/calc");
-    // }
+    static postCalc(data: any) {
+        return http.post<IPointsData>("/calc", data);
+    }
 }

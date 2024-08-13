@@ -5,8 +5,11 @@ import {Grid, GridItem} from "@consta/uikit/Grid";
 import {Button} from "@consta/uikit/Button";
 import data from '../../data';
 import {Layout} from "@consta/uikit/Layout";
-import {useState} from "react";
+import React, {useState} from "react";
 import {Modal} from "@consta/uikit/Modal";
+import IWellsAndOilfieldData from "../../types/wellsAndOilfield.type";
+import ApiService from "../../service/ApiService";
+import IPointsData from "../../types/points.type";
 
 
 const initialState = data.reduce((prev, curr) => {
@@ -15,7 +18,13 @@ const initialState = data.reduce((prev, curr) => {
     return prev
 }, {} as { [key: string]: { value: number | null, min: number, max: number } })
 
-const InputForm = () => {
+interface InputFormProps {
+    disabled: boolean,
+    selects: IWellsAndOilfieldData | null,
+    setPoints: (points: IPointsData | null) => void,
+}
+
+const InputForm: React.FC<InputFormProps> = (props) => {
     const [value, setValue] = useState(0)
     const [valid, setValid] = useState(true)
     const [isModalClearOpen, setIsModalClearOpen] = useState(false);
@@ -34,6 +43,17 @@ const InputForm = () => {
         setIsModalClearOpen(false);
     }
 
+    const sendData = () => {
+        const data = {...props.selects, ...form}
+        // ApiService.postCalc(data).then((response: any) => {
+        //     props.setPoints(response.data);
+        // }).catch(error => {
+        //     console.error('Error occurred:', error);
+        // });
+        setIsModalCalcOpen(true);
+
+    }
+
     return <Layout>
         {/* Форма для заполнения данных для графика */}
         <Grid cols={2} gap="s" className={'input-form'}>
@@ -44,6 +64,7 @@ const InputForm = () => {
             {/* Формы */}
             {data.map((item, index) => <ParamAndValue value={form[item.id].value} id={item.id} text={item.text}
                                                       min={item.min} max={item.max} measure={item.measure} key={item.id}
+                                                      disabled={props.disabled}
                                                       onChange={onChange}/>)}
             {/* Кнопки */}
             <GridItem col={2} className={'input-form-btns'}>
@@ -93,7 +114,7 @@ const InputForm = () => {
                     size="m"
                     view="primary"
                     label="Да"
-                    // onClick={}
+                    onClick={sendData}
                 />
                 <Button
                     size="m"

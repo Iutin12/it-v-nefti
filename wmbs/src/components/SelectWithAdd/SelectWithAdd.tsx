@@ -1,5 +1,5 @@
 import {Select} from "@consta/uikit/Select";
-import {useEffect, useState} from "react";
+import React, {useEffect, useState} from "react";
 import {Button} from "@consta/uikit/Button";
 import {IconAdd} from '@consta/icons/IconAdd';
 import {TextField} from "@consta/uikit/TextField";
@@ -10,8 +10,13 @@ import IOilfieldData from "../../types/oilfield.type";
 import {Layout} from "@consta/uikit/Layout";
 import ApiService from "../../service/ApiService";
 import IWellsData from "../../types/wells.type";
+import IWellsAndOilfieldData from "../../types/wellsAndOilfield.type";
 
-const SelectWithAdd = () => {
+interface ISelectWithAdd {
+    setSelectData: (data: IWellsAndOilfieldData | null) => void;
+}
+
+const SelectWithAdd: React.FC<ISelectWithAdd> = (props) => {
 
     const [valueOilfield, setValueOilfield] = useState<string | null>('');
     const [valueWell, setValueWell] = useState<string | null>('');
@@ -51,6 +56,16 @@ const SelectWithAdd = () => {
     useEffect(() => {
         getOilfield();
     }, []);
+
+    useEffect(() => {
+        if (selectValueWell != null) {
+            props.setSelectData(selectValueOilfield && selectValueWell ? {
+                well: selectValueWell,
+                field: selectValueOilfield
+            } : null);
+        }
+
+    }, [selectValueWell]);
 
     const addField = () => {
         ApiService.postOilfield(valueOilfield || '').then((response) => {
