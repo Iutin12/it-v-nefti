@@ -11,7 +11,7 @@ interface ParamAndValueProps {
     text: string;
     min: number;
     max: number;
-    setValid: (value:boolean) => void
+    // setValid: (value:boolean) => void
 }
 
 const ParamAndValue: React.FC<ParamAndValueProps> = (props) => {
