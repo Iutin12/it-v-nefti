@@ -1,10 +1,8 @@
 import express from 'express'
 
-import { createProxyMiddleware } from 'http-proxy-middleware'
+import { createProxyMiddleware, fixRequestBody } from 'http-proxy-middleware'
 
 const app = express()
-
-app.use(express.json())
 
 // TODO: auth
 app.use((req, res, next) => {
@@ -29,8 +27,12 @@ app.use(
 )
 
 app.use(
-  '/api/oilfield',
-  createProxyMiddleware({ target: process.env.WELLDATA_MICROSERVICE_URL, changeOrigin: true, logger: console })
+  '/oilfield',
+  createProxyMiddleware({
+    target: process.env.WELLDATA_MICROSERVICE_URL,
+    changeOrigin: true,
+    logger: console,
+  })
 )
 
 app.listen(process.env.PORT, () => {

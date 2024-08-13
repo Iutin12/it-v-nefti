@@ -6,7 +6,7 @@ import { Oilfield, Well } from '@prisma/client'
 export class OilfieldController {
   constructor(private readonly oilfieldService: OilfieldService) {}
 
-  @Get('/')
+  @Get()
   async getOilfieldsForUser(): Promise<Oilfield[]> {
     try {
       const oifields = await this.oilfieldService.getOilfieldsForUser()
@@ -17,7 +17,7 @@ export class OilfieldController {
     }
   }
 
-  @Get('/wells/:oilfieldId')
+  @Get('/:oilfieldId/wells/')
   async getOilfieldWells(@Param() params: { oilfieldId: string }): Promise<Well[]> {
     const oilfieldId = params.oilfieldId
 

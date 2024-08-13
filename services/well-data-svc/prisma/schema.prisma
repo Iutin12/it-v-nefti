@@ -7,74 +7,80 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
-model Well {
+model well {
   id   String @id @default(uuid())
   name String @unique
 
   created_at DateTime @default(now())
   updated_at DateTime @default(now())
 
-  oilfield   Oilfield? @relation(fields: [oilfieldId], references: [id])
+  oilfield   oilfield? @relation(fields: [oilfieldId], references: [id])
   oilfieldId String?
 
-  OilfieldWells OilfieldWells[]
-  calculations  Calculation[]
+  oilfieldWells oilfield_wells[]
+  calculations  calculation[]
 
   @@unique([id, oilfieldId])
 }
 
-model Oilfield {
+model oilfield {
   id   String @id @default(uuid())
   name String
 
   created_at DateTime @default(now())
   updated_at DateTime @default(now())
 
-  wells         Well[]
-  OilfieldWells OilfieldWells[]
+  wells         well[]
+  oilfieldWells oilfield_wells[]
 }
 
-model OilfieldWells {
+model oilfield_wells {
   id         String @id @unique @default(cuid())
   oilfieldId String
   wellId     String
 
-  oilfield Oilfield @relation(fields: [oilfieldId], references: [id], onDelete: Cascade)
-  well     Well     @relation(fields: [wellId], references: [id], onDelete: Cascade)
+  oilfield oilfield @relation(fields: [oilfieldId], references: [id], onDelete: Cascade)
+  well     well     @relation(fields: [wellId], references: [id], onDelete: Cascade)
 }
 
-model Calculation {
+model calculation {
   id String @id @unique @default(uuid())
 
-  WellHeadPressure          Float
-  Depth                     Float
-  FluidCompressibility      Float
-  FluidDensity              Float
-  PipeDiameter              Float
-  InclinationAngle          Float
-  SectionsNumber            Float
-  MoodyCoefficient          Float
-  StartLiquidRate           Float
-  Permeability              Float
-  Thickness                 Float
-  FluidViscosity            Float
-  FluidVoumeFactor          Float
-  SaturationPressure        Float
-  AverageReservoirePressure Float
-  SupplyContourRadius       Float
-  WellRadius                Float
-  SkinFactor                Float
-
-  Well   Well?   @relation(fields: [wellId], references: [id])
-  wellId String?
+  wellHeadPressure          Float
+  depth                     Float
+  fluidCompressibility      Float
+  fluidDensity              Float
+  pipeDiameter              Float
+  inclinationAngle          Float
+  sectionsNumber            Float
+  moodyCoefficient          Float
+  startLiquidRate           Float
+  permeability              Float
+  thickness                 Float
+  fluidViscosity            Float
+  fluidVoumeFactor          Float
+  saturationPressure        Float
+  averageReservoirePressure Float
+  supplyContourRadius       Float
+  wellRadius                Float
+  skinFactor                Float
 
   created_at DateTime @default(now())
   updated_at DateTime @default(now())
+
+  well   well?   @relation(fields: [wellId], references: [id])
+  wellId String?
+
+  calculation_result    calculation_result @relation(fields: [calculation_result_id], references: [id])
+  calculation_result_id String             @unique
 }
 
-model CalculationResult {
+model calculation_result {
   id String @id @unique @default(uuid())
 
   result     Json
   created_at DateTime @default(now())
+
+  calculation   calculation?
+  calculationId String
 }
