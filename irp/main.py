@@ -71,7 +71,6 @@ def calculate(inputData: CalculationInput) -> object:
             FluidViscosity * FluidVoumeFactor * (math.log(SupplyContourRadius / WellRadius) - (1 / 2) + Skin))
 
     for i in range(len(p_wf)):
-
         if p_wf[i] < AverageReservoirePressure:
             Q.append((((PI * (AverageReservoirePressure - SaturationPressure) * 10 ** 5) / (
                     1 - 0.2 * (SaturationPressure / AverageReservoirePressure) - 0.8 * (
