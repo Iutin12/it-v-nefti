@@ -102,7 +102,7 @@ const Chart: React.FC<IChartProps> = ({points}) => {
                     {
                     name: `point${1}`,
                     type: 'scatter',
-                    data: [[points?.point[1], points?.point[0]]],
+                    data: [[Number(points?.point[1].toFixed(2)), Number(points?.point[0].toFixed(2))]],
                     symbolSize: 10,
                     itemStyle: {
                         color: 'red',
@@ -140,7 +140,7 @@ const Chart: React.FC<IChartProps> = ({points}) => {
 
             {points?.point ?
                 [points?.point].map((value, index) => (<Text size='l' align='left' key={index} className='text-under-chart'>Точка пересечения {index + 1}
-                        : ({value[1]}; {value[0]})</Text>)) : <Text>Точек пересечения нет</Text>}
+                        : ({Number(value[1].toFixed(2))}; {Number(value[0].toFixed(2))})</Text>)) : <Text>Точек пересечения нет</Text>}
         </div>
     )
 }
