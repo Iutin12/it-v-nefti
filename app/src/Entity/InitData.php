@@ -80,14 +80,14 @@ class InitData
     #[ORM\Column(type: Types::TEXT, nullable: true)]
     private ?string $calcResultId = null;
 
-    #[ORM\Column]
-    private ?float $StartPwf = null;
+    // #[ORM\Column]
+    // private ?float $StartPwf = null;
 
-    #[ORM\Column]
-    private ?float $EndPwf = null;
+    // #[ORM\Column]
+    // private ?float $EndPwf = null;
 
-    #[ORM\Column]
-    private ?float $StepPwf = null;
+    // #[ORM\Column]
+    // private ?float $StepPwf = null;
 
     public function getId(): ?int
     {
@@ -365,46 +365,46 @@ class InitData
         return $this;
     }
 
-    public function getStartPwf(): ?float
-    {
-        return $this->StartPwf;
-    }
+    // public function getStartPwf(): ?float
+    // {
+    //     return $this->StartPwf;
+    // }
 
-    public function setStartPwf(float $StartPwf): static
-    {
-        $this->StartPwf = $StartPwf;
+    // public function setStartPwf(float $StartPwf): static
+    // {
+    //     $this->StartPwf = $StartPwf;
 
-        return $this;
-    }
+    //     return $this;
+    // }
 
-    public function getEndPwf(): ?float
-    {
-        return $this->EndPwf;
-    }
+    // public function getEndPwf(): ?float
+    // {
+    //     return $this->EndPwf;
+    // }
 
-    public function setEndPwf(float $EndPwf): static
-    {
-        $this->EndPwf = $EndPwf;
+    // public function setEndPwf(float $EndPwf): static
+    // {
+    //     $this->EndPwf = $EndPwf;
 
-        return $this;
-    }
+    //     return $this;
+    // }
 
-    public function getStepPwf(): ?float
-    {
-        return $this->StepPwf;
-    }
+    // public function getStepPwf(): ?float
+    // {
+    //     return $this->StepPwf;
+    // }
 
-    public function setStepPwf(float $StepPwf): static
-    {
-        $this->StepPwf = $StepPwf;
+    // public function setStepPwf(float $StepPwf): static
+    // {
+    //     $this->StepPwf = $StepPwf;
 
-        return $this;
-    }
+    //     return $this;
+    // }
 
     public function make($json){
-        $this->StartPwf = $json["StartPwf"];
-        $this->EndPwf = $json["EndPwf"];
-        $this->StepPwf = $json["StepPwf"];
+        // $this->StartPwf = $json["StartPwf"];
+        // $this->EndPwf = $json["EndPwf"];
+        // $this->StepPwf = $json["StepPwf"];
         $this->SaturationPressure = $json["SaturationPressure"];
         $this->Permeability = $json["Permeability"];
         $this->Thickness = $json["Thickness"];

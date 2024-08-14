@@ -19,9 +19,6 @@ services:
             - '../src/DependencyInjection/'
             - '../src/Entity/'
             - '../src/Kernel.php'
-    
-    App\tools\IdGen:
-        tags: ['doctrine.id_generator']
 
     # add more service definitions when explicit configuration is needed
     # please note that last definitions always *replace* previous ones
