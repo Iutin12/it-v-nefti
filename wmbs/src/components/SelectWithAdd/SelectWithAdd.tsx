@@ -97,7 +97,7 @@ const SelectWithAdd: React.FC<ISelectWithAdd> = (props) => {
         if (valueOilfield && regex.test(valueOilfield)) {
             setIsModalOilfieldOpen(true);
         } else {
-            setErrorOilfield('Введите только буквы кириллицы или латиницы или пробел');
+            setErrorOilfield('Введите только буквы кириллицы или латиницы или цифры');
         }
     };
 
@@ -105,7 +105,7 @@ const SelectWithAdd: React.FC<ISelectWithAdd> = (props) => {
         if (valueWell && regex.test(valueWell)) {
             setIsModalWellOpen(true);
         } else {
-            setErrorWell('Введите только буквы кириллицы или латиницы или пробел');
+            setErrorWell('Введите только буквы кириллицы или латиницы или цифры');
         }
     };
 
