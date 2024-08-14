@@ -44,12 +44,19 @@ const InputForm: React.FC<InputFormProps> = (props) => {
     }
 
     const sendData = () => {
-        const data = {...props.selects, ...form}
-        // ApiService.postCalc(data).then((response: any) => {
-        //     props.setPoints(response.data);
-        // }).catch(error => {
-        //     console.error('Error occurred:', error);
-        // });
+        const measurements = Object.entries(form).reduce((prev, [key, value]) => {
+            prev[key] = value.value
+            return prev
+        }, {} as any)
+
+        console.log(measurements);
+
+        const data = {StartPwl: 0, EndPwf: 200, StepPwf: 15, WellId: props.selects?.well.id, ...measurements}
+        ApiService.postCalc(data).then((response: any) => {
+            props.setPoints(response.data);
+        }).catch(error => {
+            console.error('Error occurred:', error);
+        });
         setIsModalCalcOpen(true);
 
     }
