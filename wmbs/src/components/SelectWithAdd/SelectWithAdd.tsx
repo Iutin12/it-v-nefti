@@ -91,7 +91,7 @@ const SelectWithAdd: React.FC<ISelectWithAdd> = (props) => {
     const [errorOilfield, setErrorOilfield] = useState('');
     const [errorWell, setErrorWell] = useState('');
 
-    const regex = /^[A-Za-zА-Яа-яЁё0-9]+$/;
+    const regex = /^[A-Za-zА-Яа-яЁё0-9-]+$/;
 
     const onClickOilfield = () => {
         if (valueOilfield && regex.test(valueOilfield)) {
