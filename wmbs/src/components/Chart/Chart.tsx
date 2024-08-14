@@ -49,6 +49,12 @@ const Chart: React.FC = () => {
                 fontSize: 16
             },
             data: dataX,
+            splitLine: {
+                show: true, 
+                lineStyle: {
+                    type: 'dashed'
+                }
+            }
         },
         yAxis: {
             type: 'value',
@@ -60,6 +66,12 @@ const Chart: React.FC = () => {
                 fontFamily: 'serif',
                 fontSize: 16
             },
+            splitLine: {
+                show: true, 
+                lineStyle: {
+                    type: 'dashed'
+                }
+            }
         },
         series: [
             {
@@ -114,7 +126,9 @@ const Chart: React.FC = () => {
     };
     return (
         <>
-            <ReactECharts ref={chartRef} option={options} className={'chart'} />
+        <div>
+            <ReactECharts ref={chartRef} option={options} />
+        </div>
             {pointIntersection ?
                 pointIntersection.map((data, index) => (<Text size='l' align='left' key={index} className='text-under-chart'>Точка пересечения {index + 1}
                     : ({data[0]}; {data[1]})</Text>)) : <Text>Точек пересечения нет</Text>}
