@@ -31,7 +31,7 @@ const Chart: React.FC<IChartProps> = ({points}) => {
             height: '500px'
         },
         legend: {
-            data: ['IPR', 'VLP'],
+            data: ['VLP', 'IPR'],
             textStyle: {
                 fontFamily: 'monospace'
             },
@@ -81,7 +81,7 @@ const Chart: React.FC<IChartProps> = ({points}) => {
                 smooth: true
             },
             {
-                name: 'IRP',
+                name: 'IPR',
                 data: dataFuncIRP,
                 type: 'line',
                 showSymbol: false,
