@@ -4,3 +4,7 @@
 .text-under-chart {
     padding-left: 3rem;
 }
+
+.hide {
+    display: none;
+}

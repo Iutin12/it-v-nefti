@@ -28,8 +28,8 @@ const Chart: React.FC<IChartProps> = ({points}) => {
 
     const newQ: number[] | undefined = points?.vlp.q.map(value => Number(value.toFixed(2)))
 
-    const dataFuncVLP: number[][] | undefined = newQ?.map((value, index) => [value, Number(points?.vlp.pwf[index].toFixed(2))])
-    const dataFuncIRP: number[][] | undefined = newQ?.map((value, index) => [value, Number(points?.irp.p_wf[index].toFixed(2))])
+    const dataFuncIRP: number[][] | undefined = newQ?.map((value, index) => [value, Number(points?.vlp.pwf[index].toFixed(2))])
+    const dataFuncVLP: number[][] | undefined = newQ?.map((value, index) => [value, Number(points?.irp.p_wf[index].toFixed(2))])
 
     const options = {
         animation: false,
@@ -135,14 +135,13 @@ const Chart: React.FC<IChartProps> = ({points}) => {
         },
     };
     return (
-        <>
-        <div>
+        <div className={points == null ? 'hide' : ''}>
             <ReactECharts ref={chartRef} option={options} />
-        </div>
+
             {points?.point ?
                 [points?.point].map((value, index) => (<Text size='l' align='left' key={index} className='text-under-chart'>Точка пересечения {index + 1}
                         : ({value[1]}; {value[0]})</Text>)) : <Text>Точек пересечения нет</Text>}
-        </>
+        </div>
     )
 }
 export default Chart
