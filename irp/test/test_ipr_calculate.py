@@ -1,8 +1,8 @@
-import pytest
 from fastapi.testclient import TestClient
-from irp.main import app  # Replace with the actual name of your FastAPI app file
+from irp.main import app
 
 client = TestClient(app)
+
 
 def test_calculate_success():
     response = client.post("/irp/calculate", json={
@@ -22,6 +22,7 @@ def test_calculate_success():
 
     assert response.status_code == 200
 
+
 def test_calculate_success_long_range():
     response = client.post("/irp/calculate", json={
         "StartPwf": 0,
@@ -39,6 +40,8 @@ def test_calculate_success_long_range():
     })
 
     assert response.status_code == 200
+
+
 def test_calculate_invalid_permeability():
     response = client.post("/irp/calculate", json={
         "StartPwf": 0,
@@ -56,6 +59,7 @@ def test_calculate_invalid_permeability():
     })
 
     assert response.status_code == 422
+
 
 def test_calculate_invalid_thickness():
     response = client.post("/irp/calculate", json={
