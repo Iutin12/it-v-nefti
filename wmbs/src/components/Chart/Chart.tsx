@@ -1,10 +1,11 @@
 import React from 'react';
 
 import ReactECharts from 'echarts-for-react';
-import { useRef } from 'react';
-import { Text } from '@consta/uikit/Text';
+import {useRef} from 'react';
+import {Text} from '@consta/uikit/Text';
 
 import '../Chart/Chart.css'
+import IPointsData from "../../types/points.type";
 
 const dataX: number[] = [0, 100, 200, 300, 400, 500]
 const dataVLP: number[] = [200, 175, 150, 125, 100, 75, 50, 50, 25, 0]
@@ -16,7 +17,11 @@ const pointIntersection: number[][] = [[120, 170]]
 // const dataIRP: number[] = []
 // const pointIntersection: number[][] = []
 
-const Chart: React.FC = () => {
+interface IChartProps {
+    points: IPointsData | null
+}
+
+const Chart: React.FC<IChartProps> = (props) => {
     const chartRef = useRef<ReactECharts>(null)
 
     const dataFuncVLP: number[][] = dataX.map((value, index) => [value, dataVLP[index]])

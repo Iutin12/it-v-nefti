@@ -1,103 +1,228 @@
 import {Select} from "@consta/uikit/Select";
-import {useState} from "react";
+import React, {useEffect, useState} from "react";
 import {Button} from "@consta/uikit/Button";
 import {IconAdd} from '@consta/icons/IconAdd';
 import {TextField} from "@consta/uikit/TextField";
 import './SelectWithAdd.css';
 import {Text} from "@consta/uikit/Text";
 import {Modal} from "@consta/uikit/Modal";
+import IOilfieldData from "../../types/oilfield.type";
+import {Layout} from "@consta/uikit/Layout";
+import ApiService from "../../service/ApiService";
+import IWellsData from "../../types/wells.type";
+import IWellsAndOilfieldData from "../../types/wellsAndOilfield.type";
 
-interface SelectWithAddProps {
-    label: string;
+interface ISelectWithAdd {
+    setSelectData: (data: IWellsAndOilfieldData | null) => void;
 }
 
-const SelectWithAdd: React.FC<SelectWithAddProps> = (props) => {
+const SelectWithAdd: React.FC<ISelectWithAdd> = (props) => {
 
-    type Item = {
-        label: string;
-        id: number;
-    };
+    const [valueOilfield, setValueOilfield] = useState<string | null>('');
+    const [valueWell, setValueWell] = useState<string | null>('');
 
-    const items: Item[] = [
-        {
-            label: 'Первый',
-            id: 1,
-        },
-        {
-            label: 'Второй',
-            id: 2,
-        },
-        {
-            label: 'Третий',
-            id: 3,
-        },
-    ];
+    const [selectValueOilfield, setSelectValueOilfield] = useState<IOilfieldData | null>();
+    const [selectValueWell, setSelectValueWell] = useState<IWellsData | null>();
 
-    const [value, setValue] = useState<Item | null>();
-    const [hide, setHide] = useState<boolean>(true);
-    const [isModalOpen, setIsModalOpen] = useState(false);
+    const [hideOilfield, setHideOilfield] = useState<boolean>(true);
+    const [hideWell, setHideWell] = useState<boolean>(true);
+
+    const [isModalOilfieldOpen, setIsModalOilfieldOpen] = useState(false);
+    const [isModalWellOpen, setIsModalWellOpen] = useState(false);
+
+    const [oilfield, setOilfield] = useState<Array<IOilfieldData>>([]);
+    const [wells, setWells] = useState<Array<IWellsData>>([]);
+
+    const getOilfield = () => {
+        ApiService.getOilfield()
+            .then((response: any) => {
+                setOilfield(response.data);
+            })
+            .catch(error => {
+                console.error('Error occurred:', error);
+            });
+    }
+
+    const getWells = (id: string) => {
+        ApiService.getWells(id)
+            .then((response: any) => {
+                setWells(response.data);
+            })
+            .catch(error => {
+                console.error('Error occurred:', error);
+            });
+    }
+
+    useEffect(() => {
+        getOilfield();
+    }, []);
+
+    useEffect(() => {
+        if (selectValueWell != null) {
+            props.setSelectData(selectValueOilfield && selectValueWell ? {
+                well: selectValueWell,
+                field: selectValueOilfield
+            } : null);
+        }
+
+    }, [selectValueWell]);
 
     const addField = () => {
-
-        console.log('Field');
+        ApiService.postOilfield(valueOilfield || '').then((response) => {
+            getOilfield();
+            selectChanged(response.data);
+            setSelectValueWell(null);
+            setValueOilfield(null);
+        });
+        setIsModalOilfieldOpen(false);
+        setHideOilfield(true);
     }
 
     const addWell = () => {
-        console.log('Well');
+        ApiService.postLinkWell(valueWell || '', selectValueOilfield?.id || '').then((response) => {
+            getWells(selectValueOilfield?.id || '');
+            setSelectValueWell(response.data.well);
+            setValueWell(null);
+        })
+        setIsModalWellOpen(false);
+        setHideWell(true);
 
     }
+    const [errorOilfield, setErrorOilfield] = useState('');
+    const [errorWell, setErrorWell] = useState('');
 
-    return <div className={'select-and-add'}>
-        <div className={'select-div'}>
-            <Select
-                label={props.label}
-                placeholder="Выберите значение"
-                items={items}
-                value={value}
-                onChange={setValue}
-                form={'round'}
-                size={'s'}
-                disabled={!hide}
-            />
-            <Button className={'select-div-btn'} form="round" iconLeft={IconAdd} onlyIcon size={'s'} disabled={!hide}
-                    onClick={() => setHide(false)}/>
-        </div>
-        <div className={hide ? 'input-div hide' : 'input-div'}>
-            <TextField placeholder="Введите название" size={'s'}
-                       onChange={(val) => setValue(val as Item | null | undefined)}/>
-            <Button className={'input-div-btn'} label="Добавить" size={'s'} disabled={!value}
-                    onClick={() => setIsModalOpen(true)}
-            />
-        </div>
+    const regex = /^[A-Za-zА-Яа-яЁё0-9]+$/;
 
-        <Modal
-            isOpen={isModalOpen}
-            hasOverlay
-            onEsc={() => setIsModalOpen(false)}
-            className={'modal-add'}
-        >
-            <Text as="p" size="m" view="secondary" lineHeight="m">
-                <>
-                    Вы точно хотите добавить {value}?
-                </>
-            </Text>
-            <div className={'modal-btns'}>
-                <Button
-                    size="m"
-                    view="primary"
-                    label="Да"
-                    onClick={() => props.label === 'Месторождение' ? addField() : addWell()}
+    const onClickOilfield = () => {
+        if (valueOilfield && regex.test(valueOilfield)) {
+            setIsModalOilfieldOpen(true);
+        } else {
+            setErrorOilfield('Введите только буквы кириллицы или латиницы или пробел');
+        }
+    };
+
+    const onClickWell = () => {
+        if (valueWell && regex.test(valueWell)) {
+            setIsModalWellOpen(true);
+        } else {
+            setErrorWell('Введите только буквы кириллицы или латиницы или пробел');
+        }
+    };
+
+    const selectChanged = (value: IOilfieldData | null) => {
+        setSelectValueOilfield(value);
+        setSelectValueWell(null);
+        value && getWells(value.id);
+    }
+
+    return <Layout>
+        <div className={'select-and-add'}>
+            <div className={'select-div'}>
+                <Select
+                    getItemLabel={(item) => item.field_name}
+                    getItemKey={(item) => item.id}
+                    label='Месторождение'
+                    placeholder="Выберите значение"
+                    items={oilfield}
+                    value={selectValueOilfield}
+                    onChange={(val) => selectChanged(val)}
+                    form={'round'}
+                    size={'s'}
+                    disabled={!hideOilfield}
                 />
-                <Button
-                    size="m"
-                    view="secondary"
-                    label="Нет"
-                    onClick={() => setIsModalOpen(false)}
-                />
+                <Button className={'select-div-btn'} form="round" iconLeft={IconAdd} onlyIcon size={'s'}
+                        disabled={!hideOilfield}
+                        onClick={() => setHideOilfield(false)}/>
             </div>
-        </Modal>
+            <div className={hideOilfield ? 'input-div hide' : 'input-div'}>
+                <TextField caption={errorOilfield} placeholder="Введите название" onChange={setValueOilfield}
+                           value={valueOilfield ?? ''}
+                           size={'s'}/>
+                <Button className={'input-div-btn'} label="Добавить" size={'s'} onClick={() => onClickOilfield()}/>
+            </div>
 
-    </div>;
+            <Modal
+                isOpen={isModalOilfieldOpen}
+                hasOverlay
+                onEsc={() => setIsModalOilfieldOpen(false)}
+                className={'modal-add'}
+            >
+                <Text as="p" size="m" view="secondary" lineHeight="m">
+                    <>
+                        Вы точно хотите добавить {valueOilfield}?
+                    </>
+                </Text>
+                <div className={'modal-btns'}>
+                    <Button
+                        size="m"
+                        view="primary"
+                        label="Да"
+                        onClick={() => addField()}
+                    />
+                    <Button
+                        size="m"
+                        view="secondary"
+                        label="Нет"
+                        onClick={() => setIsModalOilfieldOpen(false)}
+                    />
+                </div>
+            </Modal>
+
+        </div>
+        <div className={'select-and-add'}>
+            <div className={'select-div'}>
+                <Select
+                    getItemLabel={(item) => item.well_number}
+                    getItemKey={(item) => item.id}
+                    label='Скважина'
+                    placeholder="Выберите значение"
+                    items={wells}
+                    value={selectValueWell}
+                    onChange={setSelectValueWell}
+                    form={'round'}
+                    size={'s'}
+                    disabled={!hideWell || selectValueOilfield == null}
+                />
+                <Button className={'select-div-btn'} form="round" iconLeft={IconAdd} onlyIcon size={'s'}
+                        disabled={!hideWell || selectValueOilfield == null}
+                        onClick={() => setHideWell(false)}/>
+            </div>
+            <div className={hideWell ? 'input-div hide' : 'input-div'}>
+                <TextField caption={errorWell} placeholder="Введите название" onChange={setValueWell}
+                           value={valueWell ?? ''}
+                           size={'s'}/>
+                <Button className={'input-div-btn'} label="Добавить" size={'s'} onClick={() => onClickWell()}/>
+            </div>
+
+            <Modal
+                isOpen={isModalWellOpen}
+                hasOverlay
+                onEsc={() => setIsModalWellOpen(false)}
+                className={'modal-add'}
+            >
+                <Text as="p" size="m" view="secondary" lineHeight="m">
+                    <>
+                        Вы точно хотите добавить {valueWell}?
+                    </>
+                </Text>
+                <div className={'modal-btns'}>
+                    <Button
+                        size="m"
+                        view="primary"
+                        label="Да"
+                        onClick={() => addWell()}
+                    />
+                    <Button
+                        size="m"
+                        view="secondary"
+                        label="Нет"
+                        onClick={() => setIsModalWellOpen(false)}
+                    />
+                </div>
+            </Modal>
+
+        </div>
+    </Layout>
 }
 
 export default SelectWithAdd
