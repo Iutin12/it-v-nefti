@@ -1,3 +1,5 @@
+version: '3.8'
+
 services:
     nginx-service:
         image: nginx:stable-alpine
@@ -12,6 +14,9 @@ services:
             - postgres
             - web-irp
             - web-vlp
+        networks:
+            - app-network
+
     php81-gpn:
         build:
             context: .
@@ -21,28 +26,9 @@ services:
             - "9000:9000"
         volumes:
             - ./app:/var/www/project
-    # mysql8-service:
-    #     # We use a mariadb image which supports both amd64 & arm64 architecture
-    #     # image: mariadb:10-focal
-    #     # If you really want to use MySQL, uncomment the following line
-    #     image: mysql:8
-    #     command: '--default-authentication-plugin=mysql_native_password'
-    #     # restart: always
-    #     healthcheck:
-    #         test: ['CMD-SHELL', 'mysqladmin ping -h 127.0.0.1 --password="$$(cat /run/secrets/db-password)" --silent']
-    #         interval: 3s
-    #         retries: 5
-    #         start_period: 30s
-    #     secrets:
-    #         - db-password
-    #     volumes:
-    #         - ./mysql:/var/lib/mysql
-    #     environment:
-    #         - MYSQL_DATABASE=example
-    #         - MYSQL_ROOT_PASSWORD_FILE=/run/secrets/db-password
-    #     expose:
-    #         - 3306
-    #         - 33060
+        networks:
+            - app-network
+
     postgres:
         image: postgres:latest
         container_name: postgres_container
@@ -52,7 +38,7 @@ services:
             POSTGRES_DB: postgres_db
             PGDATA: /var/lib/postgresql/data/pgdata
         ports:
-            - "5430:5432"
+            - "5432:5432"
         volumes:
             - ./pgdata:/var/lib/postgresql/data/pgdata
         healthcheck:
@@ -63,11 +49,13 @@ services:
         restart: unless-stopped
         tty: true
         stdin_open: true
+        networks:
+            - app-network
     
     web-irp:
         build:
             context: .
-            dockerfile: ./python/Dockerfile
+            dockerfile: ./irp/Dockerfile
         command: uvicorn main:app --host 0.0.0.0 --reload
         volumes:
             - ./irp:/app
@@ -75,11 +63,13 @@ services:
             - PYTHONUNBUFFERED=1
         ports:
             - 8008:8000
+        networks:
+            - app-network
     
     web-vlp:
         build:
             context: .
-            dockerfile: ./python/Dockerfile
+            dockerfile: ./vlp/Dockerfile
         command: uvicorn main:app --host 0.0.0.0 --reload
         volumes:
             - ./vlp:/app
@@ -87,7 +77,33 @@ services:
             - PYTHONUNBUFFERED=1
         ports:
             - 8009:8000
+        networks:
+            - app-network
+
+    # api-gateway:
+    #     container_name: api-gateway
+    #     build:
+    #         context: ../services/api-gateway
+    #         dockerfile: ApiGateway.Dockerfile
+    #     ports:
+    #         - 3000:3000
+    #     depends_on:
+    #         - postgres
+
+    # well-data-svc:
+    #     container_name: well-data-svc
+    #     build:
+    #         context: ../services/well-data-svc
+    #         dockerfile: WellDataSvc.Dockerfile
+    #     ports:
+    #         - 7000:7000
+    #     depends_on:
+    #         - postgres
 
 volumes:
   pgdata:
     driver: local
+
+networks:
+    app-network:
+        driver: bridge
