@@ -5,6 +5,7 @@ import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger'
 
 async function bootstrap() {
   const app = await NestFactory.create<NestExpressApplication>(AppModule)
+  app.enableCors();
 
   const config = new DocumentBuilder()
     .setTitle('WellData service')

@@ -1,22 +1,24 @@
 version: "3.7"
 
 services:
-  db:
-    container_name: db
-    image: postgres:latest
-    environment:
-      POSTGRES_USER: user
-      POSTGRES_PASSWORD: 123456
-      POSTGRES_DB: db
-    ports:
-      - 5432:5432
-    healthcheck:
-      test: ["CMD-SHELL", "psql -U user -d db -c 'SELECT 1' || exit 1"]
-      interval: 5s
-      timeout: 5s
-      retries: 5
-    volumes:
-      - db_postgres_data:/var/lib/postgresql/data
+  # db:
+  #   container_name: db
+  #   image: postgres:latest
+  #   environment:
+  #     POSTGRES_USER: user
+  #     POSTGRES_PASSWORD: 123456
+  #     POSTGRES_DB: db
+  #   ports:
+  #     - 5432:5432
+  #   healthcheck:
+  #     test: ["CMD-SHELL", "psql -U user -d db -c 'SELECT 1' || exit 1"]
+  #     interval: 5s
+  #     timeout: 5s
+  #     retries: 5
+  #   volumes:
+  #     - db_postgres_data:/var/lib/postgresql/data
+  #   networks:
+  #     - app-network
 
   api-gateway:
     container_name: api-gateway
@@ -25,9 +27,11 @@ services:
       dockerfile: ApiGateway.Dockerfile
     ports:
       - 3000:3000
-    depends_on:
-      db:
-        condition: service_healthy
+    # depends_on:
+    #   db:
+    #     condition: service_healthy
+    networks:
+      - it-v-nefti-back_app-network
 
   well-data-svc:
     container_name: well-data-svc
@@ -36,9 +40,16 @@ services:
       dockerfile: WellDataSvc.Dockerfile
     ports:
       - 7000:7000
-    depends_on:
-      db:
-        condition: service_healthy
+    # depends_on:
+    #   db:
+    #     condition: service_healthy
+    networks:
+      - it-v-nefti-back_app-network
 
-volumes:
-  db_postgres_data:
+# volumes:
+#   db_postgres_data:
+
+
+networks:
+  it-v-nefti-back_app-network:
+    external: true

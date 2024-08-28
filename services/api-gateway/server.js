@@ -1,8 +1,11 @@
 import express from 'express'
+import cors from 'cors'
 
 import { createProxyMiddleware, fixRequestBody } from 'http-proxy-middleware'
 
 const app = express()
+
+app.use(cors())
 
 // TODO: auth
 app.use((req, res, next) => {
@@ -13,7 +16,7 @@ app.use((req, res, next) => {
 })
 
 app.use(
-  '/api/node-analysis',
+  '/api/calc',
   createProxyMiddleware({
     target: process.env.NODE_ANALYSIS_MICROSERVICE_URL,
     changeOrigin: true,
