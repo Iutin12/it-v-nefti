@@ -29,6 +29,6 @@ export default class ApiService {
     }
 
     static postCalc(data: any) {
-        return http.post<IPointsData>("/calc", data);
+        return http.post<IPointsData>("/api/calc", data);
     }
 }
